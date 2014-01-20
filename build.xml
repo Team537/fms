@@ -1,0 +1,70 @@
+<project name="fms"  basedir= "." default="compile" >
+  <property name = "app-name" value = "fms" />
+  <property name = "project-dir" value = "${basedir}" />
+  <property name = "build-dir" value = "${project-dir}/build" />
+  <property name = "lib-dir" value = "${build-dir}/lib" />
+  <property name = "src-dir" value = "${project-dir}/src" />
+  <property name = "doc-dir" value = "${build-dir}/docs" />
+  <property name = "class-dir" value = "${build-dir}/classes" />
+  <property name = "build.compiler" value = "modern" />
+
+  <target name = "init">
+    <mkdir dir = "${build-dir}" />
+    <mkdir dir = "${lib-dir}" />
+    <mkdir dir = "${doc-dir}"/>
+    <mkdir dir = "${class-dir}" />
+    <tstamp/>
+  </target>
+
+  <target name = "compile" depends = "init">
+    <javac destdir = "${class-dir}" debug="on" includeAntRuntime="false">
+      <src path="${src-dir}"/>
+      <include name="*/**"/>
+    </javac>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build-dir}"/>
+  </target>
+
+  <target name="docs" depends="compile">
+    <mkdir dir="${doc-dir}/api"/>
+      <javadoc
+         packagenames="net.dougharris.stak"
+	 sourcepath="${project-dir}/src"
+	 destdir="${doc-dir}/api"
+         author="true"
+         version="true"
+         use="true"
+         doctitle="stak"
+         windowtitle="stak"
+         bottom = "Copyright &#169; 2002 Keep It Simple Advice. All Rights Reserved"
+      />
+  </target>
+
+  <target name="dist-jar" depends="init,compile">
+    <jar jarfile="${build-dir}/${app-name}.jar" >
+      <manifest>
+        <attribute name="Manifest-Version" value="1.0"/>
+        <attribute name="Main-Class" value="fms/fms"/>
+      </manifest>
+      <fileset dir="${class-dir}">
+        <include name="*/**" />
+      </fileset>
+      <fileset dir="${src-dir}">
+        <include name="images/**" />
+        <include name="org/team537/fms/images/**" />
+        <exclude name="images/*.xcf" />
+      </fileset>
+    </jar>
+  </target>
+  <target name="src-jar" depends="init,compile">
+    <jar jarfile="${build-dir}/${app-name}.src.jar">
+    <fileset dir="${src-dir}">
+      <patternset id="sources">
+      <include name="*/**"/>
+      </patternset>
+    </fileset>
+    </jar>
+  </target>
+</project>

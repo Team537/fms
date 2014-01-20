@@ -1,0 +1,11 @@
+
+red-icon
+red-tele-icon
+red-auto-icon
+
+green-icon
+green-tele-icon
+green-auto-icon
+
+blue-alliance
+red-alliance

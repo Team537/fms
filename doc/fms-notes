@@ -1,0 +1,114 @@
+
+Blue Alliance  /  Red Alliance
+    Team Number
+    Bypass
+    DQ
+    Team  
+        DS Link Status  Red/Green
+        E-Stop          Red/Green
+    Robot 
+        Link            Red/Green
+        Enabled         Red/Green  (A or T)
+
+Status Tab
+
+DS
+    DS Link
+    In Competition Mode
+    PC connection state
+    SCC E-Stop
+    DS E-Stop
+    Enabled
+
+Robot 
+    Robot Link
+    Auto 
+    Enabled
+    0 ?
+
+Errors 
+    DS   S/w version mismatch
+    Robot
+        FPGA image checksum
+        crio image checksum
+        wrong team id
+        packet loss limit error
+
+-----
+Match:  ###             TIME: ###  SECS
+
+-----
+    Blue Alliance                               Red Alliance
+    1                                           3
+    2                                           2
+    3                                           1
+
+    FMS
+        JLabel                  Team Position
+        TextField               Team Number
+        Toggle Button           Bypass
+        Toggle Button           DQ
+    Team
+        Toggle Button           DS Link Status          red/green icon
+        Toggle Button           E-Stop                  red/green icon
+    Robot
+        Toggle Button           Link                    red/green icon
+        Toggle Button           Enabled                 red/green auto/tele icon
+
+-----
+Tabs
+    FCUI
+        Match Number
+        Auto Time:   ###
+        TeleOp Time: ###
+        Auto 
+            Start 
+            Stop
+        TeleOp
+            Start 
+            Stop
+        Reset
+        Restore
+        Game Logo
+        Video Overlay
+    Score
+    Status
+        Robot IP/Mac Status
+            Station         Blue/Red [123]
+            FMS             IP-Addr
+            DS              IP-Addr
+            FMS MAC         Mac-addr
+            DS              Mac-addr
+            DS Status
+                DS Link
+                In Competition Mode
+                PC connection state
+                SCC E-Stop
+                DS E-Stop
+                Enabled
+            Robot Status
+                Robot Link
+                Auto 
+                Enabled
+                0 ?
+        Robot Version / Errors / QOS
+            Station         Blue/Red [123]
+            Team ID
+                Team ID FMS         ####
+                Team ID DS          ####
+            DS Comm Version
+                FMS DS S/W Version
+                DS S/W Version
+            Errors
+                DS
+                    DS S/w version mismatch
+                Robot
+                    FPGA image checksum
+                    crio image checksum
+                    wrong team id
+                    packet loss limit error
+            Robot QOS
+                Avg Trip
+                Missed Count
+                Total Count 
+    Configuration
