@@ -13,13 +13,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.team537.fms.AlliancePanel;
+import org.team537.fms.MatchPanel;
 import org.team537.SwingUtil;
 
 public class fms extends JFrame 
 {
     private JPanel contentPane;
     private BorderLayout Layout1 = new BorderLayout();
-    private AlliancePanel bluePane, redPane;
+    private MatchPanel match;
     private BufferedImage background;
 
 public fms() 
@@ -40,19 +41,22 @@ private void fmsInit() throws Exception
 
     // contentPane = (JPanel) this.getContentPane();
     // contentPane.setLayout(Layout1);
-    this.setContentPane(label);
+    // this.setContentPane(label);
     this.setLayout(Layout1);
 
     // this.setSize(new Dimension(400, 300));
     this.setTitle("Team 537 FMS");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    bluePane = new AlliancePanel(true);
-    redPane = new AlliancePanel(false);
+    // bluePane = new AlliancePanel(true);
+    // redPane = new AlliancePanel(false);
 
-    this.add(bluePane, BorderLayout.WEST);
-    this.add(redPane, BorderLayout.EAST);
-    this.pack();
+    // this.add(bluePane, BorderLayout.WEST);
+    // this.add(redPane, BorderLayout.EAST);
+    // this.pack();
+
+    match = new MatchPanel();
+    this.add(match, BorderLayout.NORTH);
 }
 
 public static void main(String[] args)
