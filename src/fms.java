@@ -65,5 +65,11 @@ public static void main(String[] args)
     f.setSize(1024, 668);
     SwingUtil.center(f);
     f.setVisible(true);
+
+    int state = 0;
+    while (true) {
+        f.match.setState(state);
+        state++;
+    }
 }
 }
