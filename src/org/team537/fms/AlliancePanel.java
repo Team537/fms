@@ -20,42 +20,22 @@ import javax.swing.text.MaskFormatter;
 
 public class AlliancePanel extends JPanel
 {
-    public class AllianceTeam {
-        JFormattedTextField teamNum;
-        JCheckBox bypass;
-        JCheckBox dq;
-        JButton ds;
-        JButton es;
-        JButton rlink;
-        JButton renabled;
-    };
-
-    public class TeamStatus extends JButton {
-        public TeamStatus() {
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-        }
-
-        @Override
-        public void setContentAreaFilled(boolean b) {
-        }
-    };
-
     JLabel alliance_ready;
     JLabel fms_label;
     JLabel team_label;
     JLabel robot_label;
+    private boolean blue;
+    private Model model;
     private BufferedImage background;
     private ImageIcon redIcon;
     private ImageIcon greenIcon;
-    private AllianceTeam[] team = new AllianceTeam[3];
 
-public AlliancePanel(boolean isBlueAlliance) throws Exception
+public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
 {
     super(new GridBagLayout());
 
+    this.model = model;
+    this.blue = isBlueAlliance;
     try {
         background = isBlueAlliance 
             ? ImageIO.read(getClass().getResource("/images/blue-background.png"))
@@ -110,7 +90,7 @@ public AlliancePanel(boolean isBlueAlliance) throws Exception
 
     for (int i = 0; i < 3; i++) {
         int slot = isBlueAlliance ? i : 2 - i;
-        team[slot] = new AllianceTeam();
+        AllianceTeam team = model.getTeam(isBlueAlliance, slot);
         // team slot
         JLabel lslot = new JLabel(Integer.toString(1 + i));
         bag.fill = GridBagConstraints.HORIZONTAL;
@@ -122,93 +102,70 @@ public AlliancePanel(boolean isBlueAlliance) throws Exception
         this.add(lslot, bag);
 
         // team number
-        team[slot].teamNum = new JFormattedTextField(new MaskFormatter("####"));
-        team[slot].teamNum.setEditable(true);
-        team[slot].teamNum.setText("0000");
-        bag.fill = GridBagConstraints.HORIZONTAL;
         bag.insets = new Insets(0, 10, 0, 10);
+        bag.fill = GridBagConstraints.HORIZONTAL;
         bag.weightx = 0.15;
         bag.gridx = 1;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        this.add(team[slot].teamNum, bag);
+        this.add(team.teamNum, bag);
 
         // button bypass
-        team[slot].bypass = new JCheckBox("Bypass");
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 0);
         bag.gridx = 2;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        team[slot].bypass.setContentAreaFilled(false);
-        this.add(team[slot].bypass, bag);
+        team.bypass.setContentAreaFilled(false);
+        this.add(team.bypass, bag);
 
         // button dq
-        team[slot].dq = new JCheckBox("DQ");
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 10);
         bag.gridx = 3;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        team[slot].dq.setContentAreaFilled(false);
-        this.add(team[slot].dq, bag);
+        team.dq.setContentAreaFilled(false);
+        this.add(team.dq, bag);
         
         // Team DS link status
-        team[slot].ds = new JButton(redIcon);
-        team[slot].ds.setPressedIcon(greenIcon);
-        team[slot].ds.setDisabledSelectedIcon(redIcon);
-        team[slot].ds.setSelected(false);
-        team[slot].ds.setMaximumSize(new Dimension(24,24));
-        team[slot].ds.setMaximumSize(new Dimension(24,24));
-        team[slot].ds.setToolTipText("DS Link");
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 0);
         bag.gridx = 4;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        this.add(team[slot].ds, bag);
+        this.add(team.sum_dslink, bag);
 
         // Team E-stop
-        team[slot].es = new JButton(greenIcon);
-        team[slot].es.setPressedIcon(greenIcon);
-        team[slot].es.setDisabledSelectedIcon(redIcon);
-        team[slot].es.setSelected(true);
-        team[slot].es.setMaximumSize(new Dimension(24,24));
-        team[slot].es.setToolTipText("E-Stop");
         bag.weightx = 0.15;
         bag.gridx = 5;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        this.add(team[slot].es, bag);
+        this.add(team.sum_es, bag);
 
         // Robot Link
-        team[slot].rlink = new JButton(redIcon);
-        team[slot].rlink.setPressedIcon(greenIcon);
-        team[slot].rlink.setDisabledSelectedIcon(redIcon);
-        team[slot].rlink.setSelected(false);
-        team[slot].rlink.setToolTipText("Robot Link");
         bag.weightx = 0.15;
         bag.gridx = 6;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        this.add(team[slot].rlink, bag);
+        this.add(team.sum_rlink, bag);
 
         // Robot Enabled
-        team[slot].renabled = new JButton(redIcon);
-        team[slot].renabled.setPressedIcon(greenIcon);
-        team[slot].renabled.setDisabledSelectedIcon(redIcon);
-        team[slot].renabled.setSelected(false);
-        team[slot].renabled.setToolTipText("Enabled");
         bag.weightx = 0.15;
         bag.gridx = 7;
         bag.gridy = 2 + slot;
         bag.gridwidth = 1;
-        this.add(team[slot].renabled, bag);
+        this.add(team.sum_renabled, bag);
     }
     setMinimumSize(new Dimension(480, 160));
     setPreferredSize(new Dimension(480, 160));
-// setOpaque(true);
+    setOpaque(false);
     setVisible(true);
+}
+
+public boolean isBlue()
+{
+    return blue;
 }
 
 @Override
@@ -261,37 +218,41 @@ protected void paintComponent(Graphics g)
 
 int getTeam(int teamSlot)
 {
-    return Integer.valueOf((String) team[teamSlot].teamNum.getValue());
+    return Integer.valueOf((String) model.getTeam(isBlue(), teamSlot).teamNum.getValue());
 }
 
 boolean getBypass(int teamSlot)
 {
-    return team[teamSlot].bypass.isSelected();
+    return model.getTeam(isBlue(), teamSlot).bypass.isSelected();
 }
 
 boolean getDQ(int teamSlot)
 {
-    return team[teamSlot].dq.isSelected();
+    return model.getTeam(isBlue(), teamSlot).dq.isSelected();
 }
 
 void setDSLink(int teamSlot, boolean status)
 {
-    team[teamSlot].ds.setSelected(status);
+    // team[teamSlot].ds.setSelected(status);
+    model.getTeam(isBlue(), teamSlot).sum_dslink.setIcon(status ? greenIcon : redIcon);
 }
 
 void setEStop(int teamSlot, boolean status)
 {
-    team[teamSlot].es.setSelected(status);
+    // team[teamSlot].es.setSelected(status);
+    model.getTeam(isBlue(), teamSlot).sum_es.setIcon(status ? greenIcon : redIcon);
 }
 
 void setRobotLink(int teamSlot, boolean status)
 {
-    team[teamSlot].rlink.setSelected(status);
+    // team[teamSlot].rlink.setSelected(status);
+    model.getTeam(isBlue(), teamSlot).sum_rlink.setIcon(status ? greenIcon : redIcon);
 }
 
 void setRobotEnabled(int teamSlot, boolean status)
 {
-    team[teamSlot].renabled.setSelected(status);
+    // team[teamSlot].renabled.setSelected(status);
+    model.getTeam(isBlue(), teamSlot).sum_renabled.setIcon(status ? greenIcon : redIcon);
 }
 
 }

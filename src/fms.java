@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import org.team537.fms.AlliancePanel;
 import org.team537.fms.MatchPanel;
+import org.team537.fms.Model;
 import org.team537.fms.TabPanel;
 import org.team537.SwingUtil;
 
@@ -24,6 +25,7 @@ public class fms extends JFrame
     private MatchPanel match;
     private BufferedImage background;
     private TabPanel tabs;
+    private Model model;
 
 public fms() 
 {
@@ -57,8 +59,9 @@ private void fmsInit() throws Exception
     // this.add(redPane, BorderLayout.EAST);
     // this.pack();
 
-    match = new MatchPanel();
-    tabs = new TabPanel();
+    model = new Model();
+    match = new MatchPanel(model);
+    tabs = new TabPanel(model);
     this.add(match, BorderLayout.NORTH);
     this.add(tabs, BorderLayout.SOUTH);
 }
@@ -74,6 +77,10 @@ public static void main(String[] args)
     while (true) {
         f.match.setState(state);
         state++;
+        try {
+        Thread.sleep(250);
+        } catch (Exception ex) {
+        }
     }
 }
 }

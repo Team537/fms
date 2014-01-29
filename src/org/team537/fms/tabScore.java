@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 public class tabScore extends JPanel 
 {
 
-public tabScore() {
+public tabScore(Model model) {
 }
 
 public String getName()

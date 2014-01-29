@@ -21,10 +21,12 @@ public class MatchPanel extends JPanel
     JLabel matchTime;
     private AlliancePanel blue, red;
     private BufferedImage background;
+    Model model;
 
-public MatchPanel() throws Exception
+public MatchPanel(Model model) throws Exception
 {
     super(new BorderLayout());
+    this.model = model;
 
     setOpaque(false);
     GridBagConstraints bag = new GridBagConstraints();
@@ -49,14 +51,14 @@ public MatchPanel() throws Exception
     add(top, BorderLayout.NORTH);
 
     JPanel middle = new JPanel(new GridBagLayout());
-    blue = new AlliancePanel(true);
+    blue = new AlliancePanel(model, true);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.insets = new Insets(0, 20, 0, 0);
     bag.gridx = 0;
     bag.gridy = 0;
     middle.add(blue, bag);
     
-    red = new AlliancePanel(false);
+    red = new AlliancePanel(model, false);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.insets = new Insets(0, 0, 0, 20);
     bag.gridx = 1;
@@ -77,14 +79,26 @@ protected void paintComponent(Graphics g)
 public void setState(int st) 
 {
     for (int i = 0; i < 3; i++) {
-        blue.setDSLink(i,       1 == (st & 0x8));
-        blue.setEStop(i,        1 == (st & 0x4));
-        blue.setRobotLink(i,    1 == (st & 0x2));
-        blue.setRobotEnabled(i, 1 == (st & 0x1));
-        red.setDSLink(i,       1 == (st & 0x8));
-        red.setEStop(i,        1 == (st & 0x4));
-        red.setRobotLink(i,    1 == (st & 0x2));
-        red.setRobotEnabled(i, 1 == (st & 0x1));
+        AllianceTeam b = model.getTeam(true, i);
+        AllianceTeam r = model.getTeam(false, i);
+
+        b.setRobotAuto( 128 == (st & 0x80));
+        b.setPCstate(    64 == (st & 0x40));
+        b.setCompetition(32 == (st & 0x20));
+        b.setDSlink(     16 == (st & 0x10));
+        b.setSCCestop(    8 == (st & 0x8));
+        b.setDSestop(     4 == (st & 0x4));
+        b.setRobotLink(   2 == (st & 0x2));
+        b.setRobotEnabled(1 == (st & 0x1));
+
+        b.setRobotAuto( 128 == (st & 0x80));
+        r.setPCstate(    64 == (st & 0x40));
+        r.setCompetition(32 == (st & 0x20));
+        r.setDSlink(     16 == (st & 0x10));
+        r.setSCCestop(    8 == (st & 0x8));
+        r.setDSestop(     4 == (st & 0x4));
+        r.setRobotLink(   2 == (st & 0x2));
+        r.setRobotEnabled(1 == (st & 0x1));
         st++;
     }
 }

@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 public class tabConfig extends JPanel 
 {
 
-public tabConfig() {
+public tabConfig(Model model) {
 }
 
 public String getName()
