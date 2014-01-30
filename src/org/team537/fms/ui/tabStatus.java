@@ -1,4 +1,4 @@
-package org.team537.fms;
+package org.team537.fms.ui;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -10,6 +10,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.team537.fms.AllianceTeam;
+import org.team537.fms.Model;
 
 public class tabStatus extends JPanel 
 {
@@ -178,7 +181,7 @@ private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("10.XX.XX.5"), bag);
+    pane.add(team.ipaddr, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
@@ -199,14 +202,14 @@ private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("ff:xx:aa:bb:cc:dd"), bag);
+    pane.add(team.macaddr, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 6;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("090210a3"), bag);
+    pane.add(team.version, bag);
 
     bag.insets = new Insets(0, 0, 0, 0);
     for (int i = 0; i < 6; i++) {

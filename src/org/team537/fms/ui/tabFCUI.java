@@ -1,4 +1,4 @@
-package org.team537.fms;
+package org.team537.fms.ui;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+
+import org.team537.fms.Model;
 
 public class tabFCUI extends JPanel 
 {

@@ -11,35 +11,46 @@ import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
 public class AllianceTeam {
-    JFormattedTextField teamNum;
-    JCheckBox bypass;
-    JCheckBox dq;
+    public JFormattedTextField teamNum;
+    public JCheckBox bypass;
+    public JCheckBox dq;
     // DS
-    JLabel sum_dslink;
-    JLabel sum_es;
+    public JLabel sum_dslink;
+    public JLabel sum_es;
     // Robot
-    JLabel sum_rlink;
-    JLabel sum_renabled;
+    public JLabel sum_rlink;
+    public JLabel sum_renabled;
 
-    JLabel dslink;
-    JLabel incomp;
-    JLabel pc;
-    JLabel scc_es;
+    public JLabel dslink;
+    public JLabel incomp;
+    public JLabel pc;
+    public JLabel scc_es;
     boolean scc_estop = false;;
-    JLabel ds_es;
+    public JLabel ds_es;
     boolean ds_estop = false;;
-    JLabel ds_enabled;
+    public JLabel ds_enabled;
 
-    JLabel rlink;
-    JLabel auto;
-    JLabel renabled;
-    JLabel unused;
+    public JLabel rlink;
+    public JLabel auto;
+    public JLabel renabled;
+    public JLabel unused;
+
+    public JLabel ipaddr;
+    public JLabel macaddr;
+    public JLabel version;
+    public JLabel missCount;
+    public JLabel pktCount;
+    public JLabel avgrtt;
+    public JLabel volts;
 
     private ImageIcon redIcon;
     private ImageIcon greenIcon;
 
-    public AllianceTeam() throws Exception
+    boolean isBlue = false;
+
+    public AllianceTeam(boolean blue) throws Exception
     {
+        isBlue = blue;
         try {
             BufferedImage red = ImageIO.read(getClass().getResource("/images/red-icon.png"));
             BufferedImage green = ImageIO.read(getClass().getResource("/images/green-icon.png"));
@@ -152,5 +163,22 @@ public class AllianceTeam {
         auto.setIcon(state ? greenIcon : redIcon);
     }
 
+    public void update()
+    {
+        // teamNum.getText()
+        // robot.setTeam( num )
+        // robot.update()
+    }
+
+    public void update(Robot iRobot) 
+    {
+        setDSip( iRobot.getTeamAddr() );
+        setDSmac( iRobot.getTeamMac() );
+        setVersion( iRobot.getVersion() );
+        setMisses( iRobot.getMisses() );
+        setPacketCount( iRobot.getPacketCount() );
+        setRTT( iRobot.getRTT() );
+        setVolts( iRobot.getVolts() );
+    }
 };
 

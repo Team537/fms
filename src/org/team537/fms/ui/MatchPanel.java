@@ -1,4 +1,4 @@
-package org.team537.fms;
+package org.team537.fms.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,6 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.team537.fms.AllianceTeam;
+import org.team537.fms.Model;
 
 public class MatchPanel extends JPanel
 {

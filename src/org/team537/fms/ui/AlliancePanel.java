@@ -1,4 +1,4 @@
-package org.team537.fms;
+package org.team537.fms.ui;
 
 import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
@@ -17,6 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
+
+import org.team537.fms.AllianceTeam;
+import org.team537.fms.Model;
 
 public class AlliancePanel extends JPanel
 {

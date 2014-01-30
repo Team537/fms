@@ -1,22 +1,54 @@
 package org.team537.fms;
 
-import org.team537.fms.AllianceTeam;
-
-public class Model
+public class Model extends Thread
 {
-    private AllianceTeam[] blue = new AllianceTeam[3];
-    private AllianceTeam[] red = new AllianceTeam[3];
+    private Alliance blue, red;
 
-    public Model()
+    boolean running = false;
+
+    public Model() throws Exception 
     {
-        for (int i = 0; i < 3; i++) {
-            blue[i] = new AllianceTeam();
-            red[i] = new AllianceTeam();
-        }
+        blue = new Alliance(true);
+        red = new Alliance(false);
+        start();
     }
 
     public AllianceTeam getTeam(boolean isBlue, int slot)
     {
-        return isBlue ? blue[slot] : red[slot];
+        return isBlue ? blue.getTeam(slot) : red.getTeam(slot);
     }
+
+    public void run()
+    {
+        DatagramSocket sock;
+        try {
+            sock = new DatagramSocket(1160);
+        } catch (SocketException ex) {
+            System.err.println("Model: listenSocket: " + ex);
+            return;
+        }
+
+        byte[] data = new byte[50];
+        DatagramPacket pkt = new DatagramPacket(data, data.length);
+        while (true) {
+            boolean goodData = false;
+            try {
+                sock.receive(p);
+                goodData = true;
+            } catch (InterruptedException iex) {
+                System.err.println("Model: listen thread interrupted: " + iex);
+            } catch (Exception ex) {
+                System.err.println("Model: listen thread: unknown: " + ex);
+            }
+            if (goodData) {
+                Robot robot = new Robot(data);
+                p.setLength(data.length);
+                if (robot.isBlue())
+                    blue.update(robot);
+                else
+                    red.update(robot);
+            }
+        }
+    }
+
 }

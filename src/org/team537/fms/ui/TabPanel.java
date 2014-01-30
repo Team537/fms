@@ -1,7 +1,9 @@
-package org.team537.fms;
+package org.team537.fms.ui;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+
+import org.team537.fms.Model;
 
 public class TabPanel extends JTabbedPane
 {
