@@ -95,12 +95,12 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         int slot = isBlueAlliance ? i : 2 - i;
         AllianceTeam team = model.getTeam(isBlueAlliance, slot);
         // team slot
-        JLabel lslot = new JLabel(Integer.toString(1 + i));
+        JLabel lslot = new JLabel(Integer.toString(1 + slot));
         bag.fill = GridBagConstraints.HORIZONTAL;
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 10, 0, 0);
         bag.gridx = 0;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(lslot, bag);
 
@@ -109,7 +109,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         bag.fill = GridBagConstraints.HORIZONTAL;
         bag.weightx = 0.15;
         bag.gridx = 1;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.teamNum, bag);
 
@@ -117,7 +117,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 0);
         bag.gridx = 2;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         team.bypass.setContentAreaFilled(false);
         this.add(team.bypass, bag);
@@ -126,7 +126,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 10);
         bag.gridx = 3;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         team.dq.setContentAreaFilled(false);
         this.add(team.dq, bag);
@@ -135,28 +135,28 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 0);
         bag.gridx = 4;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_dslink, bag);
 
         // Team E-stop
         bag.weightx = 0.15;
         bag.gridx = 5;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_es, bag);
 
         // Robot Link
         bag.weightx = 0.15;
         bag.gridx = 6;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_rlink, bag);
 
         // Robot Enabled
         bag.weightx = 0.15;
         bag.gridx = 7;
-        bag.gridy = 2 + slot;
+        bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_renabled, bag);
     }

@@ -18,15 +18,19 @@ public class Alliance extends Thread {
 
     public void run()
     {
-        try {
-            for (int i = 0; i < 3; i++) {
-                team[i].update();
+        while (true) {
+            int i = 0;
+            try {
+                for ( ; i < 3; i++) {
+                    team[i].update(i);
+                }
+                Thread.sleep(500);
+            } catch (InterruptedException iex) {
+                System.err.println("AllianceTeam: [" + i + "] " + team[i].getTeam() + ": timeout: " + iex);
+            } catch (Exception ex) {
+                System.err.println("Robot: [" + i + "] " + team[i].getTeam() + ": exception: " + ex);
+                ex.printStackTrace();
             }
-            Thread.sleep(500);
-        } catch (InterruptedException iex) {
-            System.err.println("AllianceTeam: " + team + ": timeout: " + iex);
-        } catch (Exception ex) {
-            System.err.println("Robot: " + team + ": exception: " + ex);
         }
     }
 

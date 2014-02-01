@@ -46,7 +46,11 @@ public class AllianceTeam {
     private ImageIcon redIcon;
     private ImageIcon greenIcon;
 
+    private Robot robot;
+
     boolean isBlue = false;
+    boolean first = true;
+    int thisNum = 0;
 
     public AllianceTeam(boolean blue) throws Exception
     {
@@ -102,6 +106,17 @@ public class AllianceTeam {
 
         pc = new JLabel(redIcon);
         pc.setToolTipText("PC Connection State");
+
+        ipaddr = new JLabel("10.x.x.5");
+        macaddr = new JLabel("ff:ff:ff:ff:ff:xx");
+        version = new JLabel("xxxxxxxx");
+        missCount = new JLabel("0");
+        pktCount = new JLabel("0000");
+        avgrtt = new JLabel("00.0");
+        volts = new JLabel("00.00");
+
+        robot = new Robot();
+        robot.setVersion("xxxxxxxx");
     }
 
     public void setDSlink(boolean link)
@@ -142,10 +157,12 @@ public class AllianceTeam {
 
     public void setDSip(String ip)
     {
+        ipaddr.setText(ip);
     }
 
     public void setDSmac(String mac)
     {
+        macaddr.setText(mac);
     }
 
     public void setCompetition(boolean comp)
@@ -163,15 +180,60 @@ public class AllianceTeam {
         auto.setIcon(state ? greenIcon : redIcon);
     }
 
-    public void update()
+    public void setVersion(String vers) 
     {
-        // teamNum.getText()
-        // robot.setTeam( num )
-        // robot.update()
+        version.setText(vers);
+    }
+
+    public void setMisses(int cnt)
+    {
+        missCount.setText(Integer.valueOf(cnt).toString());
+    }
+
+    public void setPacketCount(int cnt)
+    {
+        pktCount.setText(Integer.valueOf(cnt).toString());
+    }
+
+    public void setRTT(int rtt)
+    {
+        avgrtt.setText(Integer.valueOf(rtt).toString());
+    }
+
+    public void setVolts(float val)
+    {
+        volts.setText(Float.valueOf(val).toString());
+    }
+
+    public int getTeam()
+    {
+        int num = 0;
+        try {
+            num = Integer.parseInt( teamNum.getText() );
+            // System.out.println("getTeam " + num);
+        } catch (Exception ex) {
+            System.err.println("ATeam: getTeam: " + ex);
+        }
+        return num;
+    }
+
+    public void update(int i) throws Exception
+    {
+        int num = getTeam();
+        if (false && ((0 == i) || (thisNum != num))) {
+            System.out.println("updating " + (isBlue ? "Blue Team [" : "Red  Team [")
+                        + i + "]: " + num);
+            first = false;
+            thisNum = num;
+        }
+        robot.setTeam( num );
+        robot.setStation(isBlue, i);
+        robot.update();
     }
 
     public void update(Robot iRobot) 
     {
+        System.out.println("recieved packet: " + iRobot.toString());
         setDSip( iRobot.getTeamAddr() );
         setDSmac( iRobot.getTeamMac() );
         setVersion( iRobot.getVersion() );

@@ -99,50 +99,33 @@ public tabStatus(Model model) throws Exception {
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
     bag.gridy = 0;
+    bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
     bot.add(new JLabel("Station"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 1;
-    bag.gridy = 0;
-    bag.insets = new Insets(0, 0, 0, 20);
-    bot.add(new JLabel("DS Id"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 2;
-    bag.gridy = 0;
-    bag.insets = new Insets(0, 0, 0, 20);
-    bot.add(new JLabel("DS Version"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 3;
-    bag.gridy = 0;
-    bag.insets = new Insets(0, 0, 0, 20);
-    bot.add(new JLabel("FPGA"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 4;
-    bag.gridy = 0;
-    bag.insets = new Insets(0, 0, 0, 20);
-    bot.add(new JLabel("CRIO"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 5;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
     bot.add(new JLabel("Avg Trip"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 6;
+    bag.gridx = 3;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
     bot.add(new JLabel("Missed Count"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 7;
+    bag.gridx = 4;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
     bot.add(new JLabel("Total Count"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 5;
+    bag.gridy = 0;
+    bag.insets = new Insets(0, 0, 0, 40);
+    bot.add(new JLabel("Voltage"), bag);
 
     bag.insets = new Insets(0, 0, 0, 0);
     for (int i = 0; i < 3; i++) {
@@ -260,53 +243,32 @@ private void teamBotInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     pane.add(new JLabel((isBlue ? "Blue " : "Red ") + slot), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 1;
-    bag.gridy = gridy;
-    bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("0000"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 2;
     bag.gridy = gridy;
     bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("140108n1"), bag);
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.avgrtt, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
     bag.gridy = gridy;
     bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("1ab2c3d"), bag);
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.missCount, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
     bag.gridy = gridy;
     bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("1ab2c3d"), bag);
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.pktCount, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 5;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);
-    pane.add(new JLabel("0"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 6;
-    bag.gridy = gridy;
-    bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 40);
-    pane.add(new JLabel("0"), bag);
-
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 7;
-    bag.gridy = gridy;
-    bag.gridwidth = 1;
-    bag.insets = new Insets(0, 0, 0, 40);
-    pane.add(new JLabel("0"), bag);
+    pane.add(team.volts, bag);
 }
 
 public String getName()

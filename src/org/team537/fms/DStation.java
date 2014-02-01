@@ -7,12 +7,12 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
-public class Robot
+public class DStation
 {
     int packet = 0;
     int team = 0;
     InetAddress addr;
-    static DatagramSocket sock;
+    DatagramSocket sock;
     CRC32 checksum = new CRC32();
     byte[] version;
     boolean enabled, valid;
@@ -20,19 +20,18 @@ public class Robot
     byte color;
     byte station;
     String teamAddr, dsmac;
-    int misscount, pktcount, avgrtt;
+    int misscount, pktcount;
+    float avgrtt;
     float volts;
 
-    static {
-        try {
-            sock = new DatagramSocket(1120);
-        } catch (SocketException ex) {
-            System.err.println("Robot socket: " + ex);
-        }
-    }
-
-    public Robot() throws Exception 
+    public DStation() throws Exception 
     {
+        try {
+            sock = new DatagramSocket();
+        } catch (SocketException ex) {
+            System.err.println("DSCommand: " + ex);
+            throw ex;
+        }
         reset();
     }
 
@@ -44,29 +43,20 @@ public class Robot
         valid = false;
     }
 
-    public Robot(byte[] data)
+    public DStation(byte[] data)
     {
         checksum.reset();
         checksum.update(data);
-        packet = 0xffff & ((data[0] << 8) + data[1]);
-        state = (byte) (0xff & data[2]);
-        team = ((0xff & data[4]) * 100) + (0xff & data[5]);
-        teamAddr = Byte.valueOf(data[6]) + "." + (0xff & data[7]) + "." + (0xff & data[8]) + "." + (0xff & data[9]);
-        color = data[10];
-        station = data[11];
-        dsmac = (0xff & data[12]) + ":" 
-                + (0xff & data[13]) + ":" 
-                + (0xff & data[14]) + ":" 
-                + (0xff & data[15]) + ":" 
-                + (0xff & data[16]) + ":" 
-                + (0xff & data[17]);
-        version = new byte[8];
-        for (int i = 0; i < 8; i++)
+        packet = (data[1] << 8) + data[0];
+        state = data[2];
+        color = data[3];
+        station = data[4];
+        
+        for (int i = 0; i < version.length; i++)
             version[i] = data[i + 18];
-        misscount = 0xffff & ((data[26] << 8) + data[27]);
-        pktcount = 0xffff & ((data[28] << 8) + data[29]);
-        avgrtt = 0xffff & ((data[30] << 8) + data[31]);           // time in ms
-        volts = b2v(data[40], data[41]);
+
+        checksum.reset();
+        checksum.update(data);
     }
 
     private float b2v(byte b1, byte b2)
@@ -148,22 +138,56 @@ public class Robot
 
     private DatagramPacket buildPacket()
     {
-        byte[] data = new byte[74];
+        byte[] data = new byte[50];
 
         for (int i = 0; i < data.length; i++)
             data[i] = 0;
 
         packet++;                       // Packet number
-        data[0] = (byte) (0xff &  packet);
-        data[1] = (byte) (0xff & (packet >> 8));
+        data[0] = (byte) (0xff & (packet >> 8));
+        data[1] = (byte) (0xff &  packet);
 
         data[2] = state;                // Robot state
 
-        data[3] = color;                // Alliance color
-        data[4] = station;              // Alliance station
+        data[4] = (byte) (team / 100);
+        data[5] = (byte) (team % 100);
 
-        for (int j = 0; j < version.length; j++)
-            data[18 + j] = version[j];
+        // ip-addr
+        data[6] = 10;
+        data[7] = (byte) (team / 100);
+        data[8] = (byte) (team % 100);
+        data[9] = 5;
+
+        data[10] = color;
+        data[11] = station;
+
+        // mac addr
+        for (int i = 0; i < 6; i++)
+            data[i + 12] = (byte) 0xff;
+
+        for (int i = 0; i < 8; i++)
+            data[i + 18] = version[i];
+
+        data[26] = (byte) (0xff & (misscount >> 8));
+        data[27] = (byte) (0xff &  misscount);
+        data[28] = (byte) (0xff & (pktcount >> 8));
+        data[29] = (byte) (0xff &  pktcount);
+
+        int avgms = (int) (1000 * avgrtt);
+        data[30] = (byte) (0xff & (avgms >> 8));
+        data[31] = (byte) (0xff &  avgms);
+
+        for (int i = 0; i < 6; i++)
+            data[i + 34] = (byte) 0xff;
+
+        int ivolt = (int) (100 * volts);
+        data[41] = (byte) (ivolt % 10);
+        ivolt = ivolt / 10;
+        data[41] |= (byte) (ivolt % 10) << 4;
+        ivolt = ivolt / 10;
+        data[40] = (byte) (ivolt % 10);
+        ivolt = ivolt / 10;
+        data[40] |= (byte) (ivolt % 10) << 4;
 
         checksum.reset();
         checksum.update(data);
@@ -173,7 +197,7 @@ public class Robot
         data[70] = crc[0];
         data[71] = crc[1];
         data[72] = crc[2];
-        data[73] = crc[3];
+        data[73] = crc[4];
 
         return new DatagramPacket(data, data.length, addr, 1120);
     }
@@ -220,7 +244,7 @@ public class Robot
         return misscount;
     }
 
-    public int getRTT()
+    public float getRTT()
     {
         return avgrtt;
     }
@@ -228,23 +252,5 @@ public class Robot
     public float getVolts()
     {
         return volts;
-    }
-
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Robot: packet: ").append(packet);
-        sb.append(" state: ").append(state);
-        sb.append(" team: ").append(team);
-        sb.append(" Addr: ").append(teamAddr);
-        sb.append(" color: ").append(Integer.toHexString(Byte.valueOf(color).intValue()));
-        sb.append(" station: ").append(station);
-        sb.append(" mac: ").append(dsmac);
-        sb.append(" version: ").append(new String(version));
-        sb.append(" miscnt: ").append(misscount);
-        sb.append(" pkts: ").append(pktcount);
-        sb.append(" avgrtt: ").append(avgrtt);
-        sb.append(" volts: ").append(volts);
-        return sb.toString();
     }
 }

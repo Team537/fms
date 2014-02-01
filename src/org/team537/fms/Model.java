@@ -1,5 +1,9 @@
 package org.team537.fms;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
 public class Model extends Thread
 {
     private Alliance blue, red;
@@ -33,16 +37,16 @@ public class Model extends Thread
         while (true) {
             boolean goodData = false;
             try {
-                sock.receive(p);
+                sock.receive(pkt);
                 goodData = true;
-            } catch (InterruptedException iex) {
-                System.err.println("Model: listen thread interrupted: " + iex);
             } catch (Exception ex) {
                 System.err.println("Model: listen thread: unknown: " + ex);
             }
+            // System.out.println("good: " + goodData + " recieved bytes: " + pkt.getLength());
             if (goodData) {
                 Robot robot = new Robot(data);
-                p.setLength(data.length);
+                System.out.println(robot);
+                pkt.setLength(data.length);
                 if (robot.isBlue())
                     blue.update(robot);
                 else
