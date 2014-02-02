@@ -106,4 +106,14 @@ public void setState(int st)
     }
 }
 
+public void setTime(int currTime)
+{
+    matchTime.setText("TIME:  " + currTime + " SECS");
+}
+
+public void setMatch(int mMatch)
+{
+    matchNumber.setText("MATCH:  " + mMatch + " ");
+}
+
 }

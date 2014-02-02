@@ -44,6 +44,10 @@ public class Robot
         valid = false;
     }
 
+    // state:
+    //  64: 0x40
+    //  94: 0x5e
+
     public Robot(byte[] data)
     {
         checksum.reset();
@@ -96,6 +100,8 @@ public class Robot
             System.err.println("Robot.setTeam: " + iteam + ": " + ex);
             throw ex;
         }
+        if (0 == team)
+            return;
         valid = true;
     }
 
@@ -105,15 +111,15 @@ public class Robot
     }
 
     public void setAuto()
-    {
-        state = 'S';            // auto
-        if (enabled) state += 0x20;
+    {   
+        state = 'S';            // auto   0x53
+        if (enabled) state += 0x20;  //   0x73
     }
 
     public void setTeleop()
     {
-        state = 'C';            // teleop
-        if (enabled) state += 0x20;
+        state = 'C';            // teleop  0x43
+        if (enabled) state += 0x20;    //  0x63
     }
 
     public void setEnabled()
@@ -180,9 +186,12 @@ public class Robot
 
     public void update() throws Exception
     {
-        if (!valid)
+        if (!valid) {
+            // clear previous state
             return;
-        sock.send( buildPacket() );
+        }
+        DatagramPacket pkt = buildPacket();
+        sock.send( pkt );
     }
 
     public boolean isBlue()
@@ -228,6 +237,14 @@ public class Robot
     public float getVolts()
     {
         return volts;
+    }
+
+    public String getStatus() 
+    {
+        char cs = (char) state;
+        StringBuffer sb = new StringBuffer();
+        sb.append(state).append(" 0x").append(Integer.toHexString(cs));
+        return sb.toString();
     }
 
     public String toString()

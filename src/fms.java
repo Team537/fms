@@ -57,7 +57,11 @@ private void fmsInit() throws Exception
 
     model = new Model();
     match = new MatchPanel(model);
+    model.setMatchPanel(match);
+
     tabs = new TabPanel(model);
+    model.setTabPanel(tabs);
+
     this.add(match, BorderLayout.NORTH);
     this.add(tabs, BorderLayout.SOUTH);
 }

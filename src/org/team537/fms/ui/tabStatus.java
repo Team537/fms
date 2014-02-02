@@ -104,6 +104,12 @@ public tabStatus(Model model) throws Exception {
     bot.add(new JLabel("Station"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 1;
+    bag.gridy = 0;
+    bag.insets = new Insets(0, 0, 0, 40);
+    bot.add(new JLabel("Status"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 2;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
@@ -233,38 +239,46 @@ private void teamBotInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
 {
     int slot = isBlue ? 1 + ident : 3 - ident;
     int gridy = isBlue ? 1 + ident : 4 + ident;
+    int xx = 0;
 
     AllianceTeam team = model.getTeam(isBlue, ident);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 0;
+    bag.gridx = xx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     pane.add(new JLabel((isBlue ? "Blue " : "Red ") + slot), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 2;
+    bag.gridx = xx++;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.status, bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = xx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);
     pane.add(team.avgrtt, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 3;
+    bag.gridx = xx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);
     pane.add(team.missCount, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 4;
+    bag.gridx = xx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);
     pane.add(team.pktCount, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 5;
+    bag.gridx = xx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);

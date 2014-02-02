@@ -42,6 +42,7 @@ public class AllianceTeam {
     public JLabel pktCount;
     public JLabel avgrtt;
     public JLabel volts;
+    public JLabel status;
 
     private ImageIcon redIcon;
     private ImageIcon greenIcon;
@@ -112,8 +113,9 @@ public class AllianceTeam {
         version = new JLabel("xxxxxxxx");
         missCount = new JLabel("0");
         pktCount = new JLabel("0000");
-        avgrtt = new JLabel("00.0");
+        avgrtt = new JLabel("000");
         volts = new JLabel("00.00");
+        status = new JLabel("-?-");
 
         robot = new Robot();
         robot.setVersion("xxxxxxxx");
@@ -205,6 +207,25 @@ public class AllianceTeam {
         volts.setText(Float.valueOf(val).toString());
     }
 
+    public void setStatus(String stat) 
+    {
+        status.setText(stat);
+    }
+
+    public void setEnabled(boolean auto)
+    {
+        if (auto)
+            robot.setAuto();
+        else
+            robot.setTeleop();
+        robot.setEnabled();
+    }
+
+    public void setDisabled()
+    {
+        robot.setDisabled();
+    }
+
     public int getTeam()
     {
         int num = 0;
@@ -241,6 +262,7 @@ public class AllianceTeam {
         setPacketCount( iRobot.getPacketCount() );
         setRTT( iRobot.getRTT() );
         setVolts( iRobot.getVolts() );
+        setStatus( iRobot.getStatus() );
     }
 };
 

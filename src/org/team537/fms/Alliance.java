@@ -43,4 +43,22 @@ public class Alliance extends Thread {
             }
         }
     }
+
+    public void startMatch(boolean auto)
+    {
+        // block update
+        for (int i = 0; i < 3; i++) {
+            team[i].setEnabled(auto);
+        }
+        // enabled update
+    }
+
+    public void stopMatch()
+    {
+        // block update
+        for (int i = 0; i < 3; i++) {
+            team[i].setDisabled();
+        }
+        // enabled update
+    }
 }

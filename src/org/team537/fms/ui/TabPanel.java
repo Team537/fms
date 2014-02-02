@@ -23,4 +23,14 @@ public TabPanel(Model model) throws Exception
     setVisible(true);
 }
 
+public void setReady()
+{
+    ((tabFCUI) tabs[0]).setReady();
+}
+
+public void stopMatch()
+{
+    ((tabFCUI) tabs[0]).stopMatch();
+}
+
 }
