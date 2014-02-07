@@ -5,6 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.awt.Insets;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -145,6 +149,24 @@ public tabStatus(Model model) throws Exception {
     add(bot, BorderLayout.CENTER);
 }
 
+private String getLocalAddr()
+{
+    try {
+    Enumeration<NetworkInterface> nlist = NetworkInterface.getNetworkInterfaces();
+
+    while (nlist.hasMoreElements()) {
+        NetworkInterface ni = nlist.nextElement();
+        for (InterfaceAddress ia : ni.getInterfaceAddresses()) {
+            if (ia.getAddress().isSiteLocalAddress())
+                return ia.getAddress().getHostAddress();
+        }
+    }
+    }
+    catch (Exception ex) {
+    }
+    return "10.0.0.x";
+}
+
 private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, int ident)
 {
     int slot = isBlue ? 1 + ident : 3 - ident;
@@ -163,7 +185,9 @@ private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
-    pane.add(new JLabel("10.0.0.2"), bag);
+    String localHost = "10.0.0.2";
+    localHost = getLocalAddr();
+    pane.add(new JLabel(localHost), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 2;
