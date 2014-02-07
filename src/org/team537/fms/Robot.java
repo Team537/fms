@@ -39,14 +39,27 @@ public class Robot
     public void reset() 
     {
         packet = 0;
-        state = 'S';
+        state = 'W';
         enabled = false;
         valid = false;
     }
 
-    // state:
-    //  64: 0x40
-    //  94: 0x5e
+    // state:   when using 'S'/'C' as auto/tele-op  set-state
+    //  64: 0x40        no radio / no crio / ds
+    //  68: 0x44           radio / no crio / ds
+    //  78: 0x4e           radio /    crio / ds   tele-op disabled
+    //  94: 0x5e           radio /    crio / ds   auto disabled
+    // 110: 0x6e           radio /    crio / ds   tele-op enabled
+    // 126: 0x7e           radio /    crio / ds   auto enabled
+
+    // state:   when using 'W'/'G' as auto/tele-op  set-state
+    //  64: 0x40        no radio / no crio / ds
+    //  68: 0x44           radio / no crio / ds
+    //  78: 0x4e           radio /    crio / ds   tele-op disabled
+    // 206: 0xce           recieved after auto-disable sent
+    // 222: 0xde           radio /    crio / ds   auto disabled
+    // 238: 0xee           radio /    crio / ds   tele-op enabled
+    // 254: 0xfe           radio /    crio / ds   auto enabled
 
     public Robot(byte[] data)
     {
@@ -107,19 +120,19 @@ public class Robot
 
     public void setState(boolean tele, boolean enable)
     {
-        state = 'S';            // auto
+        state = 'W';            // auto
     }
 
     public void setAuto()
     {   
-        state = 'S';            // auto   0x53
-        if (enabled) state += 0x20;  //   0x73
+        state = 'W';            // auto   0x57
+        if (enabled) state += 0x20;  //   0x77
     }
 
     public void setTeleop()
     {
-        state = 'C';            // teleop  0x43
-        if (enabled) state += 0x20;    //  0x63
+        state = 'G';            // teleop  0x47
+        if (enabled) state += 0x20;    //  0x67
     }
 
     public void setEnabled()
@@ -241,20 +254,24 @@ public class Robot
 
     public String getStatus() 
     {
-        char cs = (char) state;
+        char cs = (char) (0x00ff & state);
         StringBuffer sb = new StringBuffer();
-        sb.append(state).append(" 0x").append(Integer.toHexString(cs));
+        sb.append(0x0ff & state).append(" 0x").append(Integer.toHexString(cs));
         return sb.toString();
+    }
+
+    private String toHex(byte val) {
+        return Integer.toHexString(0x00ff & val);
     }
 
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
         sb.append("Robot: packet: ").append(packet);
-        sb.append(" state: ").append(state);
+        sb.append(" state: ").append(toHex(state));
         sb.append(" team: ").append(team);
         sb.append(" Addr: ").append(teamAddr);
-        sb.append(" color: ").append(Integer.toHexString(Byte.valueOf(color).intValue()));
+        sb.append(" color: ").append(toHex(state));    // Integer.toHexString(Byte.valueOf(color).intValue()));
         sb.append(" station: ").append(station);
         sb.append(" mac: ").append(dsmac);
         sb.append(" version: ").append(new String(version));
