@@ -26,6 +26,9 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - reset/clear station status fields when clearing team number
 - import match schedule  
 - export radio keys
-- raise fcui panel location from center to top
 - fetch and display fms ip-addr
 - implement test mode frame
+- A/T inside graphic robot enabled/disabled
+
+## Completed
+- raise fcui panel location from center to top

@@ -1,5 +1,6 @@
 package org.team537.fms.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,23 +34,24 @@ public class tabFCUI extends JPanel implements ActionListener, ChangeListener
 
 public tabFCUI(Model model)
 {
-
-    super(new GridBagLayout());
+    super(new BorderLayout());
     this.model = model;
     setPreferredSize(new Dimension(400, 400));
     GridBagConstraints bag = new GridBagConstraints();
 
+    JPanel top = new JPanel(new GridBagLayout());
+
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
     bag.gridy = 0;
-    this.add(new JLabel("Match Number:"), bag);
+    top.add(new JLabel("Match Number:"), bag);
 
     SpinnerModel smodel = new SpinnerNumberModel(1, 1, 200, 1);
     matchNumber = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 1;
     bag.gridy = 0;
-    this.add(matchNumber, bag);
+    top.add(matchNumber, bag);
     matchNumber.addChangeListener(this);
     model.setMatchNumber(1);
     JComponent comp = matchNumber.getEditor();
@@ -60,27 +62,27 @@ public tabFCUI(Model model)
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
     bag.gridy = 0;
-    this.add(new JLabel("Auto Time:"), bag);
+    top.add(new JLabel("Auto Time:"), bag);
 
     smodel = new SpinnerNumberModel(15, 5, 30, 1);
     autoTime = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
     bag.gridy = 0;
-    this.add(autoTime, bag);
+    top.add(autoTime, bag);
     autoTime.addChangeListener(this);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 5;
     bag.gridy = 0;
-    this.add(new JLabel("TeleOp Time:"), bag);
+    top.add(new JLabel("TeleOp Time:"), bag);
 
     smodel = new SpinnerNumberModel(120, 5, 200, 1);
     teleTime = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 6;
     bag.gridy = 0;
-    this.add(teleTime, bag);
+    top.add(teleTime, bag);
     teleTime.addChangeListener(this);
 
     model.setMatchTime(15, 120);
@@ -90,17 +92,17 @@ public tabFCUI(Model model)
     bag.gridx = 0;
     bag.gridy = 2;
     bag.gridwidth = 2;
-    this.add(start, bag);
+    top.add(start, bag);
     start.setActionCommand("start");
     start.addActionListener(this);
-    start.setEnabled(false);
+    start.setEnabled(true);
 
     reset = new JButton("reset");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
     bag.gridy = 3;
     bag.gridwidth = 2;
-    this.add(reset, bag);
+    top.add(reset, bag);
     reset.setActionCommand("reset");
     reset.addActionListener(this);
 
@@ -109,9 +111,11 @@ public tabFCUI(Model model)
     bag.gridx = 4;
     bag.gridy = 3;
     bag.gridwidth = 2;
-    this.add(restore, bag);
+    top.add(restore, bag);
     restore.setActionCommand("restore");
     restore.addActionListener(this);
+
+    this.add(top, BorderLayout.NORTH);
 
     setVisible(true);
 }
