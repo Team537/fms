@@ -87,6 +87,13 @@ public class Model extends Thread
         mPanel.setMatch(mNum);
     }
 
+    // start:       auto disabled
+    // startMatch:  auto enabled
+    // auto-end:    auto disabled
+    // switch:      tele disabled
+    // tele-op:     tele enabled
+    // stopMatch:
+
     public void startMatch()
     {
         blue.startMatch(true);
