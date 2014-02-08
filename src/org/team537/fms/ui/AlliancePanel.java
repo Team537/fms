@@ -55,14 +55,13 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
     GridBagConstraints bag = new GridBagConstraints();
     // setFocusTraversalPolicy(new APFocusPolicy());
 
-    String ready = isBlueAlliance ? "BLUE ALLIANCE READY" : "RED ALLIANCE READY";
-    alliance_ready = new JLabel(ready);
+    // String ready = isBlueAlliance ? "BLUE ALLIANCE READY" : "RED ALLIANCE READY";
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.0;
-    bag.gridx = 3;
+    bag.gridx = 0;
     bag.gridy = 0;
-    bag.gridwidth = 3;
-    this.add(alliance_ready, bag);
+    bag.gridwidth = 8;
+    this.add(model.getAlliance(isBlueAlliance).alliance_ready, bag);
 
     fms_label = new JLabel("FMS");
     bag.fill = GridBagConstraints.HORIZONTAL;

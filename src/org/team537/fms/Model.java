@@ -31,6 +31,11 @@ public class Model extends Thread
     {
         return isBlue ? blue.getTeam(slot) : red.getTeam(slot);
     }
+    
+    public Alliance getAlliance(boolean isBlue)
+    {
+        return isBlue ? blue : red;
+    }
 
     public void run()
     {
@@ -58,7 +63,7 @@ public class Model extends Thread
             if (goodData) {
                 Robot robot = new Robot(data);
                 robot.setTimeStamp(tstamp);
-                System.out.println(robot);
+                // System.out.println(robot);
                 pkt.setLength(data.length);
                 if (robot.isBlue())
                     blue.update(robot);

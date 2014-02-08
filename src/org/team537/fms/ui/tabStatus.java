@@ -183,17 +183,18 @@ private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
 {
     int slot = isBlue ? 1 + ident : 3 - ident;
     int gridy = isBlue ? 1 + ident : 4 + ident;
+    int gridx = 0;
 
-    AllianceTeam team = model.getTeam(isBlue, ident);
+    AllianceTeam team = model.getTeam(isBlue, slot - 1);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 0;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
-    pane.add(new JLabel((isBlue ? "Blue " : "Red ") + slot), bag);
+    pane.add(new JLabel((isBlue ? "Blue " : "Red  ") + slot), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 1;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
@@ -202,35 +203,35 @@ private void teamTopInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     pane.add(new JLabel(localHost), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 2;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
     pane.add(team.ipaddr, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 3;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
     pane.add(new JLabel("0000"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 4;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
     pane.add(new JLabel("0000"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 5;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
     pane.add(team.macaddr, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.gridx = 6;
+    bag.gridx = gridx++;
     bag.gridy = gridy;
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 20);
@@ -277,7 +278,7 @@ private void teamBotInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     int gridy = isBlue ? 1 + ident : 4 + ident;
     int xx = 0;
 
-    AllianceTeam team = model.getTeam(isBlue, ident);
+    AllianceTeam team = model.getTeam(isBlue, slot - 1);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = xx++;

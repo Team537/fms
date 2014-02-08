@@ -61,27 +61,27 @@ public tabFCUI(Model model)
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
-    bag.gridy = 0;
+    bag.gridy = 1;
     top.add(new JLabel("Auto Time:"), bag);
 
     smodel = new SpinnerNumberModel(15, 5, 30, 1);
     autoTime = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
-    bag.gridy = 0;
+    bag.gridy = 1;
     top.add(autoTime, bag);
     autoTime.addChangeListener(this);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 5;
-    bag.gridy = 0;
+    bag.gridy = 1;
     top.add(new JLabel("TeleOp Time:"), bag);
 
     smodel = new SpinnerNumberModel(120, 5, 200, 1);
     teleTime = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 6;
-    bag.gridy = 0;
+    bag.gridy = 1;
     top.add(teleTime, bag);
     teleTime.addChangeListener(this);
 
@@ -90,7 +90,7 @@ public tabFCUI(Model model)
     start = new JButton("start");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
-    bag.gridy = 2;
+    bag.gridy = 3;
     bag.gridwidth = 2;
     top.add(start, bag);
     start.setActionCommand("start");
@@ -100,7 +100,7 @@ public tabFCUI(Model model)
     reset = new JButton("reset");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
-    bag.gridy = 3;
+    bag.gridy = 4;
     bag.gridwidth = 2;
     top.add(reset, bag);
     reset.setActionCommand("reset");
@@ -109,7 +109,7 @@ public tabFCUI(Model model)
     restore = new JButton("restore");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
-    bag.gridy = 3;
+    bag.gridy = 4;
     bag.gridwidth = 2;
     top.add(restore, bag);
     restore.setActionCommand("restore");

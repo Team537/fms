@@ -53,6 +53,7 @@ public class AllianceTeam {
 
     private Robot robot;
 
+    boolean enabled;
     boolean isBlue = false;
     boolean first = true;
     int thisNum = 0;
@@ -66,8 +67,8 @@ public class AllianceTeam {
             redIcon = new ImageIcon(red, "red");
             greenIcon = new ImageIcon(green, "green");
         } catch (Exception ex) {
-            System.err.println("AlliancePanel: " + ex);
-            throw(ex);
+            System.err.println("AllianceTeam: " + ex);
+            throw(new Exception("AllianceTeam constructor load", ex));
         }
         teamNum = new JFormattedTextField(new MaskFormatter("####"));
         teamNum.setEditable(true);
@@ -151,6 +152,7 @@ public class AllianceTeam {
     {
         sum_rlink.setIcon(link ? greenIcon : redIcon);
         rlink.setIcon(link ? greenIcon : redIcon);
+        enabled = link;
     }
 
     public void setRobotEnabled(boolean en, boolean auto)
@@ -158,6 +160,11 @@ public class AllianceTeam {
         sum_renabled.setIcon(en ? greenIcon : redIcon);
         ds_enabled.setIcon(en ? greenIcon : redIcon);
         renabled.setIcon(en ? greenIcon : redIcon);
+    }
+
+    public boolean getRobotEnabled()
+    {
+        return enabled || bypass.isSelected();
     }
 
     public void setFMSip(String ip)
@@ -196,32 +203,32 @@ public class AllianceTeam {
 
     public void setMisses(int cnt)
     {
-        missCount.setText(Integer.valueOf(cnt).toString());
+        missCount.setText(String.format("%1$5d", cnt));
     }
 
     public void setDSMisses(int cnt)
     {
-        dmissCount.setText(Integer.valueOf(cnt).toString());
+        dmissCount.setText(String.format("%1$5d", cnt));
     }
 
     public void setPacketCount(int cnt)
     {
-        pktCount.setText(Integer.valueOf(cnt).toString());
+        pktCount.setText(String.format("%1$5d", cnt));
     }
 
     public void setRTT(int rtt)
     {
-        avgrtt.setText(Integer.valueOf(rtt).toString());
+        avgrtt.setText(String.format("%1$5d", rtt));
     }
 
     public void setDSRTT(double rtt)
     {
-        davgrtt.setText(Double.valueOf(rtt).toString());
+        davgrtt.setText(String.format("%1$8.3f", rtt));
     }
 
     public void setVolts(float val)
     {
-        volts.setText(Float.valueOf(val).toString());
+        volts.setText(String.format("%1$8.3f", val));
     }
 
     public void setStatus(String stat) 

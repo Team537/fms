@@ -332,10 +332,7 @@ public class Robot
 
     public String getStatus() 
     {
-        char cs = (char) (0x00ff & state);
-        StringBuffer sb = new StringBuffer();
-        sb.append(0x0ff & state).append(" 0x").append(Integer.toHexString(cs));
-        return sb.toString();
+        return String.format("0x%1$2x", 0x0ff & state);
     }
 
     private String toHex(byte val) {
