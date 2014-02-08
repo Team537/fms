@@ -48,8 +48,8 @@ public class AllianceTeam {
     public JLabel volts;
     public JLabel status;
 
-    private ImageIcon redIcon;
-    private ImageIcon greenIcon;
+    private ImageIcon redIcon, redIconAuto, redIconTele;
+    private ImageIcon greenIcon, greenIconAuto, greenIconTele, greenIconBypass;
 
     private Robot robot;
 
@@ -66,6 +66,19 @@ public class AllianceTeam {
             BufferedImage green = ImageIO.read(getClass().getResource("/images/green-icon.png"));
             redIcon = new ImageIcon(red, "red");
             greenIcon = new ImageIcon(green, "green");
+
+            red = ImageIO.read(getClass().getResource("/images/red-icon-A.png"));
+            green = ImageIO.read(getClass().getResource("/images/green-icon-A.png"));
+            redIconAuto = new ImageIcon(red, "red");
+            greenIconAuto = new ImageIcon(green, "green");
+
+            red = ImageIO.read(getClass().getResource("/images/red-icon-T.png"));
+            green = ImageIO.read(getClass().getResource("/images/green-icon-T.png"));
+            redIconTele = new ImageIcon(red, "red");
+            greenIconTele = new ImageIcon(green, "green");
+
+            green = ImageIO.read(getClass().getResource("/images/green-icon-B.png"));
+            greenIconBypass = new ImageIcon(green, "green");
         } catch (Exception ex) {
             System.err.println("AllianceTeam: " + ex);
             throw(new Exception("AllianceTeam constructor load", ex));
@@ -94,7 +107,7 @@ public class AllianceTeam {
         rlink = new JLabel(redIcon);
         rlink.setToolTipText("Robot Link");
 
-        sum_renabled = new JLabel(redIcon);
+        sum_renabled = new JLabel(redIconAuto);
         sum_renabled.setToolTipText("Enabled");
         ds_enabled = new JLabel(redIcon);
         ds_enabled.setToolTipText("Enabled");
@@ -130,7 +143,10 @@ public class AllianceTeam {
 
     public void setDSlink(boolean link)
     {
-        sum_dslink.setIcon(link ? greenIcon : redIcon);
+        if (bypass.isSelected())
+            sum_dslink.setIcon(greenIconBypass);
+        else
+            sum_dslink.setIcon(link ? greenIcon : redIcon);
         dslink.setIcon(link ? greenIcon : redIcon);
     }
 
@@ -150,14 +166,17 @@ public class AllianceTeam {
 
     public void setRobotLink(boolean link)
     {
-        sum_rlink.setIcon(link ? greenIcon : redIcon);
+        if (bypass.isSelected())
+            sum_rlink.setIcon(greenIconBypass);
+        else
+            sum_rlink.setIcon(link ? greenIcon : redIcon);
         rlink.setIcon(link ? greenIcon : redIcon);
         enabled = link;
     }
 
     public void setRobotEnabled(boolean en, boolean auto)
     {
-        sum_renabled.setIcon(en ? greenIcon : redIcon);
+        sum_renabled.setIcon(en ? (auto ? greenIconAuto : greenIconTele) : (auto ? redIconAuto : redIconTele));
         ds_enabled.setIcon(en ? greenIcon : redIcon);
         renabled.setIcon(en ? greenIcon : redIcon);
     }
@@ -281,7 +300,7 @@ public class AllianceTeam {
             robot.incrementMissCount();
             setDSMisses( robot.getDSMisses() );
         }
-        if (!robot.isValid()) {
+        if (!robot.isValid() || bypass.isSelected()) {
             setDSip( "10.x.x.5" );
             setDSmac( "ff:ff:ff:ff:ff:xx" );
             setVersion( "xxxxxxxx" );
@@ -294,7 +313,7 @@ public class AllianceTeam {
             setRobotLink( false );
             setPCstate( false );
             setRobotAuto( false );
-            setRobotEnabled( false, false );
+            setRobotEnabled( false, true );
             setDSRTT( 0.0 );
         }
         robot.setStation(isBlue, i);

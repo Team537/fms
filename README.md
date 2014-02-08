@@ -17,24 +17,24 @@ Based on screen shots of the fms-lite program, found in `doc`.
 
 ## TODO
 
-- Red/Green 'Alliance Ready' graphic
-- implement bypass button
 - implement dq button
-- decode robot/ds return packet state
 - config tab ui impl
 - score tab ui impl
-- reset/clear station status fields when clearing or resetting team number
 - import match schedule  
 - export radio keys
 - implement test mode frame
-- A/T inside graphic robot enabled/disabled
 - what does DS send when estopped
 - set fms ip continuously and not at startup
-- Red 3 at top shows up as Red 1 at bottom of status page
-- compute and display ds avg rtt
 
 
 ## Completed
 - raise fcui panel location from center to top
 - fetch and display fms ip-addr
+- decode robot/ds return packet state
 - detect missing packets from DS
+- reset/clear station status fields when clearing or resetting team number
+- Red/Green 'Alliance Ready' graphic
+- implement bypass button
+- A/T inside graphic robot enabled/disabled
+- Red 3 at top shows up as Red 1 at bottom of status page
+- compute and display ds avg rtt
