@@ -23,12 +23,18 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - decode robot/ds return packet state
 - config tab ui impl
 - score tab ui impl
-- reset/clear station status fields when clearing team number
+- reset/clear station status fields when clearing or resetting team number
 - import match schedule  
 - export radio keys
-- fetch and display fms ip-addr
 - implement test mode frame
 - A/T inside graphic robot enabled/disabled
+- what does DS send when estopped
+- set fms ip continuously and not at startup
+- Red 3 at top shows up as Red 1 at bottom of status page
+- compute and display ds avg rtt
+
 
 ## Completed
 - raise fcui panel location from center to top
+- fetch and display fms ip-addr
+- detect missing packets from DS

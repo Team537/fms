@@ -21,6 +21,7 @@ public class AllianceTeam {
     public JLabel sum_rlink;
     public JLabel sum_renabled;
 
+    // DS
     public JLabel dslink;
     public JLabel incomp;
     public JLabel pc;
@@ -29,7 +30,10 @@ public class AllianceTeam {
     public JLabel ds_es;
     boolean ds_estop = false;;
     public JLabel ds_enabled;
+    public JLabel dmissCount;
+    public JLabel davgrtt;
 
+    // Robot
     public JLabel rlink;
     public JLabel auto;
     public JLabel renabled;
@@ -102,7 +106,7 @@ public class AllianceTeam {
         unused = new JLabel(greenIcon);
         unused.setToolTipText("Unused");
 
-        incomp = new JLabel(redIcon);
+        incomp = new JLabel(greenIcon);
         incomp.setToolTipText("In Competition Mode");
 
         pc = new JLabel(redIcon);
@@ -116,6 +120,8 @@ public class AllianceTeam {
         avgrtt = new JLabel("000");
         volts = new JLabel("00.00");
         status = new JLabel("-?-");
+        dmissCount = new JLabel("0");
+        davgrtt = new JLabel("000");
 
         robot = new Robot();
         robot.setVersion("xxxxxxxx");
@@ -147,9 +153,10 @@ public class AllianceTeam {
         rlink.setIcon(link ? greenIcon : redIcon);
     }
 
-    public void setRobotEnabled(boolean en)
+    public void setRobotEnabled(boolean en, boolean auto)
     {
         sum_renabled.setIcon(en ? greenIcon : redIcon);
+        ds_enabled.setIcon(en ? greenIcon : redIcon);
         renabled.setIcon(en ? greenIcon : redIcon);
     }
 
@@ -192,6 +199,11 @@ public class AllianceTeam {
         missCount.setText(Integer.valueOf(cnt).toString());
     }
 
+    public void setDSMisses(int cnt)
+    {
+        dmissCount.setText(Integer.valueOf(cnt).toString());
+    }
+
     public void setPacketCount(int cnt)
     {
         pktCount.setText(Integer.valueOf(cnt).toString());
@@ -200,6 +212,11 @@ public class AllianceTeam {
     public void setRTT(int rtt)
     {
         avgrtt.setText(Integer.valueOf(rtt).toString());
+    }
+
+    public void setDSRTT(double rtt)
+    {
+        davgrtt.setText(Double.valueOf(rtt).toString());
     }
 
     public void setVolts(float val)
@@ -211,7 +228,7 @@ public class AllianceTeam {
     {
         status.setText(stat);
     }
-
+    
     public void setEnabled(boolean auto)
     {
         if (auto)
@@ -248,13 +265,38 @@ public class AllianceTeam {
             thisNum = num;
         }
         robot.setTeam( num );
+        int lastSent = robot.getPacketNumber();
+        int lastRecv = robot.getLastPacket();
+        if (robot.isValid() && (lastSent != lastRecv)) {
+            System.out.println("got pkt " + lastRecv + " looking for " + lastSent);
+            setDSlink(false);
+            setPCstate(false);
+            robot.incrementMissCount();
+            setDSMisses( robot.getDSMisses() );
+        }
+        if (!robot.isValid()) {
+            setDSip( "10.x.x.5" );
+            setDSmac( "ff:ff:ff:ff:ff:xx" );
+            setVersion( "xxxxxxxx" );
+            setMisses( 0 );
+            setPacketCount( 0 );
+            setRTT( 0 );
+            setVolts((float) 0.0 );
+            setStatus( "-?-" );
+            setDSlink( false );
+            setRobotLink( false );
+            setPCstate( false );
+            setRobotAuto( false );
+            setRobotEnabled( false, false );
+            setDSRTT( 0.0 );
+        }
         robot.setStation(isBlue, i);
         robot.update();
     }
 
     public void update(Robot iRobot) 
     {
-        System.out.println("recieved packet: " + iRobot.toString());
+        // System.out.println("recieved packet: " + iRobot.toString());
         setDSip( iRobot.getTeamAddr() );
         setDSmac( iRobot.getTeamMac() );
         setVersion( iRobot.getVersion() );
@@ -263,6 +305,14 @@ public class AllianceTeam {
         setRTT( iRobot.getRTT() );
         setVolts( iRobot.getVolts() );
         setStatus( iRobot.getStatus() );
+        setDSlink( true );                              // i got this packet - ds alive
+        setRobotLink( iRobot.doesDSseeCRio() );
+        setPCstate( iRobot.doesDSseeRadio() );
+        setRobotAuto( iRobot.isAuto() );
+        setRobotEnabled( iRobot.isEnabled(), iRobot.isAuto() );
+        robot.setLastPacket( iRobot.getPacketNumber() );
+        robot.setRoundTrip( iRobot.getTimeStamp() );
+        setDSRTT( robot.getDSRTT() );
     }
 };
 

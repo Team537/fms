@@ -46,8 +46,10 @@ public class Model extends Thread
         DatagramPacket pkt = new DatagramPacket(data, data.length);
         while (true) {
             boolean goodData = false;
+            long tstamp = 0;
             try {
                 sock.receive(pkt);
+                tstamp = System.currentTimeMillis();
                 goodData = true;
             } catch (Exception ex) {
                 System.err.println("Model: listen thread: unknown: " + ex);
@@ -55,6 +57,7 @@ public class Model extends Thread
             // System.out.println("good: " + goodData + " recieved bytes: " + pkt.getLength());
             if (goodData) {
                 Robot robot = new Robot(data);
+                robot.setTimeStamp(tstamp);
                 System.out.println(robot);
                 pkt.setLength(data.length);
                 if (robot.isBlue())

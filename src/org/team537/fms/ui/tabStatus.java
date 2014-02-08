@@ -117,22 +117,34 @@ public tabStatus(Model model) throws Exception {
     bag.gridx = 2;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
-    bot.add(new JLabel("Avg Trip"), bag);
+    bot.add(new JLabel("DS Miss"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
-    bot.add(new JLabel("Missed Count"), bag);
+    bot.add(new JLabel("DS Avg Trip"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
-    bot.add(new JLabel("Total Count"), bag);
+    bot.add(new JLabel("Avg Trip"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 5;
+    bag.gridy = 0;
+    bag.insets = new Insets(0, 0, 0, 40);
+    bot.add(new JLabel("Missed Count"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 6;
+    bag.gridy = 0;
+    bag.insets = new Insets(0, 0, 0, 40);
+    bot.add(new JLabel("Total Count"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 7;
     bag.gridy = 0;
     bag.insets = new Insets(0, 0, 0, 40);
     bot.add(new JLabel("Voltage"), bag);
@@ -279,6 +291,20 @@ private void teamBotInit(JPanel pane, GridBagConstraints bag, boolean isBlue, in
     bag.gridwidth = 1;
     bag.insets = new Insets(0, 0, 0, 40);
     pane.add(team.status, bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = xx++;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.dmissCount, bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = xx++;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    bag.insets = new Insets(0, 0, 0, 40);
+    pane.add(team.davgrtt, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = xx++;

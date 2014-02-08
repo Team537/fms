@@ -10,6 +10,7 @@ import java.util.zip.CRC32;
 public class Robot
 {
     int packet = 0;
+    int lastPacket;
     int team = 0;
     InetAddress addr;
     static DatagramSocket sock;
@@ -22,6 +23,9 @@ public class Robot
     String teamAddr, dsmac;
     int misscount, pktcount, avgrtt;
     float volts;
+    int dsMissCount;
+    long tstamp;
+    Stats davgrtt;
 
     static {
         try {
@@ -33,6 +37,7 @@ public class Robot
 
     public Robot() throws Exception 
     {
+        davgrtt = new Stats();
         reset();
     }
 
@@ -42,6 +47,8 @@ public class Robot
         state = 'W';
         enabled = false;
         valid = false;
+        dsMissCount = 0;
+        davgrtt.clear();
     }
 
     // state:   when using 'S'/'C' as auto/tele-op  set-state
@@ -65,25 +72,26 @@ public class Robot
     {
         checksum.reset();
         checksum.update(data);
-        packet = 0xffff & ((data[0] << 8) + data[1]);
-        state = (byte) (0xff & data[2]);
-        team = ((0xff & data[4]) * 100) + (0xff & data[5]);
-        teamAddr = Byte.valueOf(data[6]) + "." + (0xff & data[7]) + "." + (0xff & data[8]) + "." + (0xff & data[9]);
+        packet = b2i(data[0], data[1]);
+        state = (byte) (0x0ff & data[2]);
+        team = ((0x0ff & data[4]) * 100) + (0x0ff & data[5]);
+        teamAddr = (0x0ff & data[6]) + "." + (0x0ff & data[7]) + "." + (0x0ff & data[8]) + "." + (0x0ff & data[9]);
         color = data[10];
         station = data[11];
-        dsmac = (0xff & data[12]) + ":" 
-                + (0xff & data[13]) + ":" 
-                + (0xff & data[14]) + ":" 
-                + (0xff & data[15]) + ":" 
-                + (0xff & data[16]) + ":" 
-                + (0xff & data[17]);
+        dsmac = toHex(data[12]) + ":" + toHex(data[13]) + ":" + toHex(data[14]) + ":" 
+                + toHex(data[15]) + ":" + toHex(data[16]) + ":" + toHex(data[17]);
         version = new byte[8];
         for (int i = 0; i < 8; i++)
             version[i] = data[i + 18];
-        misscount = 0xffff & ((data[26] << 8) + data[27]);
-        pktcount = 0xffff & ((data[28] << 8) + data[29]);
-        avgrtt = 0xffff & ((data[30] << 8) + data[31]);           // time in ms
+        misscount = b2i(data[26], data[27]);
+        pktcount = b2i(data[28], data[29]);
+        avgrtt = b2i(data[30], data[31]);                  // time in ms
         volts = b2v(data[40], data[41]);
+    }
+
+    private int b2i(byte b1, byte b2)
+    {
+        return 0xffff & (((0x0ff & b1) << 8) + (0x0ff & b2));
     }
 
     private float b2v(byte b1, byte b2)
@@ -165,6 +173,26 @@ public class Robot
             version[i] = (i < temp.length) ? temp[i] : 0;
     }
 
+    public void setLastPacket(int number)
+    {
+        lastPacket = number;
+    }
+
+    public void setTimeStamp(long ts)
+    {
+        tstamp = ts;
+    }
+
+    public void setRoundTrip(long ts)
+    {
+        davgrtt.add(ts - tstamp);
+    }
+
+    public void incrementMissCount()
+    {
+        dsMissCount++;
+    }
+
     private DatagramPacket buildPacket()
     {
         byte[] data = new byte[74];
@@ -172,9 +200,9 @@ public class Robot
         for (int i = 0; i < data.length; i++)
             data[i] = 0;
 
-        packet++;                       // Packet number
-        data[0] = (byte) (0xff &  packet);
-        data[1] = (byte) (0xff & (packet >> 8));
+        packet = (packet + 1) % 65535;  // Packet number
+        data[0] = (byte) (0xff & (packet >> 8));
+        data[1] = (byte) (0xff &  packet);
 
         data[2] = state;                // Robot state
 
@@ -200,16 +228,26 @@ public class Robot
     public void update() throws Exception
     {
         if (!valid) {
-            // clear previous state
             return;
         }
         DatagramPacket pkt = buildPacket();
         sock.send( pkt );
+        tstamp = System.currentTimeMillis();
     }
 
     public boolean isBlue()
     {
         return 'B' == color;
+    }
+
+    public int getPacketNumber()
+    {
+        return packet;
+    }
+
+    public int getLastPacket()
+    {
+        return lastPacket;
     }
 
     public int getTeam()
@@ -242,14 +280,54 @@ public class Robot
         return misscount;
     }
 
+    public int getDSMisses()
+    {
+        return dsMissCount;
+    }
+
     public int getRTT()
     {
         return avgrtt;
     }
 
+    public double getDSRTT()
+    {
+        return davgrtt.Mean();
+    }
+
     public float getVolts()
     {
         return volts;
+    }
+
+    public boolean doesDSseeRadio()
+    {
+        return 0x04 == (0x04 & state);
+    }
+
+    public boolean doesDSseeCRio()
+    {
+        return 0x0a == (0x0a & state);
+    }
+
+    public boolean isEnabled()
+    {
+        return 0x20 == (0x20 & state);
+    }
+
+    public boolean isAuto()
+    {
+        return 0x10 == (0x10 & state);
+    }
+
+    public long getTimeStamp()
+    {
+        return tstamp;
+    }
+
+    public boolean isValid()
+    {
+        return valid;
     }
 
     public String getStatus() 
