@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -62,6 +63,7 @@ public tabFCUI(Model model)
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 3;
     bag.gridy = 1;
+    bag.insets = new Insets(0, 10, 0, 0);
     top.add(new JLabel("Auto Time:"), bag);
 
     smodel = new SpinnerNumberModel(15, 5, 30, 1);
@@ -69,12 +71,14 @@ public tabFCUI(Model model)
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 4;
     bag.gridy = 1;
+    bag.insets = new Insets(0, 10, 0, 0);
     top.add(autoTime, bag);
     autoTime.addChangeListener(this);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 5;
     bag.gridy = 1;
+    bag.insets = new Insets(0, 0, 0, 0);
     top.add(new JLabel("TeleOp Time:"), bag);
 
     smodel = new SpinnerNumberModel(120, 5, 200, 1);

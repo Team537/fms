@@ -49,7 +49,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         greenIcon = new ImageIcon(green, "green");
     } catch (Exception ex) {
         System.err.println("AlliancePanel: " + ex);
-        throw(ex);
+        throw(new Exception("AlliancePanel ", ex));
     }
 
     GridBagConstraints bag = new GridBagConstraints();
