@@ -105,13 +105,17 @@ public class Model extends Thread
 
     private void runMatch()
     {
+        System.out.println(String.format("match: %1$d  count: %2$5d  match: %3$5d", 
+                    matchState, counterTime, matchTime));
+        try {
         switch (matchState) {
         case 0:                 // Auto Enabled
             if (0 == counterTime-- % 4) {
                 matchTime--;
                 mPanel.setTime(matchTime);
                 if (teleTime == matchTime) {
-                    stopMatch();
+                    blue.stopMatch();
+                    red.stopMatch();
                     matchState = 1;
                 }
             }
@@ -145,6 +149,10 @@ public class Model extends Thread
                 }
             }
             break;
+        }
+        } catch (Exception ex) {
+            System.err.println("runMatch: caught " + ex);;
+            ex.printStackTrace();
         }
     }
 

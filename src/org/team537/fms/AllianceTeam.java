@@ -271,12 +271,12 @@ public class AllianceTeam {
 
     public boolean getRobotAckDisable()
     {
-        return robot.getRobotAckDisable();
+        return bypass.isSelected() || robot.getRobotAckDisable() ;
     }
 
     public boolean getRobotAckTele()
     {
-        return robot.getRobotAckTele();
+        return bypass.isSelected() || robot.getRobotAckTele();
     }
 
     public void setDisabled()

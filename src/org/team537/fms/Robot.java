@@ -352,7 +352,7 @@ public class Robot
 
     public boolean getRobotAckTele()
     {
-        return 0x20 != (0x20 & rstate);
+        return 0x10 == (0x10 & rstate);
     }
 
     private String toHex(byte val) {
