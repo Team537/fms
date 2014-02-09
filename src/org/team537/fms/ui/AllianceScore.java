@@ -12,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 import org.team537.fms.Model;
 
@@ -35,10 +38,17 @@ public class AllianceScore extends JPanel
         JCheckBox lowgoal;
         JCheckBox highgoal;
         JLabel total;
+        JButton plus;
     }
 
     ArrayList<AutoScore> ascore = new ArrayList<AutoScore>();
     ArrayList<TeleScore> tscore = new ArrayList<TeleScore>();
+    JSpinner fouls;
+    JSpinner techFouls;
+    JLabel foulTotal;
+    JLabel allTotal;
+    int cycleCount = 0;
+    int cycleGridy;
 
     BufferedImage background;
 
@@ -94,7 +104,7 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
     bag.gridwidth = 1;
     add(hotgoal, bag);
 
-    JLabel atotal = new JLabel("Auto Total");
+    JLabel atotal = new JLabel("Total");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.0;
     bag.gridx = 8;
@@ -102,12 +112,27 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
     bag.gridwidth = 1;
     add(atotal, bag);
 
-    gridx = 0;
-    gridy = 1;
+    JLabel alltot = new JLabel("Alliance Total");
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.weightx = 0.0;
+    bag.gridx = 9;
+    bag.gridy = 0;
+    bag.gridwidth = 1;
+    bag.insets = new Insets(0, 30, 0, 0);
+    add(alltot, bag);
+
+    bag.gridx = 9;
+    bag.gridy = 1;
+    bag.gridwidth = 1;
+    allTotal = new JLabel(String.format("%1$4d", 0));
+    add(allTotal, bag);
+
+    bag.insets = new Insets(0, 0, 0, 0);
+    gridy = 0;
     for (int i = 0; i < 3; i++) {
         AutoScore aentry = new AutoScore();
-        gridy++;
         gridx = 0;
+        gridy++;
 
         bag.insets = new Insets(0, 0, 0, 0);
         bag.gridx = gridx++;
@@ -147,25 +172,54 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
         ascore.add(aentry);
     }
 
+    gridx = 0;
     gridy++;
 
     JLabel foul = new JLabel("Fouls");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.0;
-    bag.gridx = 0;
-    bag.gridy = gridy++;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
     bag.gridwidth = 1;
     add(foul, bag);
 
-    JLabel tfoul = new JLabel("Tech Fouls");
+    SpinnerModel smodel = new SpinnerNumberModel(1, 1, 20, 1);
+    fouls = new JSpinner(smodel);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.0;
-    bag.gridx = 0;
-    bag.gridy = gridy++;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
     bag.gridwidth = 1;
-    add(tfoul, bag);
+    add(fouls, bag);
+
+    JLabel techFoul = new JLabel("Tech Fouls");
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.weightx = 0.0;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    add(techFoul, bag);
+
+    smodel = new SpinnerNumberModel(1, 1, 20, 1);
+    techFouls = new JSpinner(smodel);
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.weightx = 0.0;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    add(techFouls, bag);
+
+    foulTotal = new JLabel(String.format("%1$4d", 0));
+    // bag.insets = new Insets(0, 0, 0, 10);
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.weightx = 0.0;
+    bag.gridx = 8;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
+    add(foulTotal, bag);
 
     gridx = 0;
+    gridy++;
 
     // Header  Tele-op
     JLabel cycle = new JLabel("Cycle");
@@ -217,7 +271,7 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
     add(zone3, bag);
 
     JLabel lowgoal = new JLabel("low-goal");
-    bag.insets = new Insets(0, 0, 0, 10);
+    bag.insets = new Insets(0, 10, 0, 10);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.0;
     bag.gridx = gridx++;
@@ -243,77 +297,79 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
     bag.gridwidth = 1;
     add(total, bag);
 
+    cycleGridy = gridy + 1;
+    addCycle();
+}
+
+private void addCycle()
+{
     TeleScore tentry = new TeleScore();
-    gridy++;
-    gridx = 0;
+    int gridx = 0;
+    int prev = tscore.size();
+    
+    if (0 != prev) {
+        TeleScore pentry = (TeleScore) tscore.get(prev - 1);
+        pentry.plus.setEnabled(false);
+    }
+    GridBagConstraints bag = new GridBagConstraints();
 
     bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
+    bag.gridy = cycleGridy;
     bag.gridwidth = 1;
-    tentry.cycle = new JLabel(String.format("%1$3d", 0));
+    tentry.cycle = new JLabel(String.format("%1$3d", cycleCount++));
     add(tentry.cycle, bag);
 
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.zone1 = new JCheckBox(" 0 ");
     tentry.zone1.setContentAreaFilled(false);
     add(tentry.zone1, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.zone2 = new JCheckBox(" 10 ");
     tentry.zone2.setContentAreaFilled(false);
     add(tentry.zone2, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.truss = new JCheckBox(" 10 ");
     tentry.truss.setContentAreaFilled(false);
     add(tentry.truss, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.rcatch = new JCheckBox(" 10 ");
     tentry.rcatch.setContentAreaFilled(false);
     add(tentry.rcatch, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.zone3 = new JCheckBox(" 30 ");
     tentry.zone3.setContentAreaFilled(false);
     add(tentry.zone3, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.lowgoal = new JCheckBox(" 1 ");
     tentry.lowgoal.setContentAreaFilled(false);
     add(tentry.lowgoal, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.highgoal = new JCheckBox(" 10 ");
     tentry.highgoal.setContentAreaFilled(false);
     add(tentry.highgoal, bag);
 
-    bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = gridy;
     bag.gridwidth = 1;
     tentry.total = new JLabel(String.format("%1$4d", 0));
+    add(tentry.total, bag);
+
+    bag.gridx = gridx++;
+    bag.gridwidth = 1;
+    tentry.plus = new JButton("plus");
     add(tentry.total, bag);
 
     tscore.add(tentry);
@@ -323,7 +379,7 @@ public AllianceScore(Model model, boolean isBlue) throws Exception
 protected void paintComponent(Graphics g)
 {
     super.paintComponent(g);
-    g.drawImage(background, 0, 0, null);
+    g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 }
 
 }

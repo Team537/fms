@@ -1,11 +1,15 @@
 package org.team537.fms.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
-import java.awt.Insets;
+import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 import org.team537.fms.Model;
 
@@ -13,30 +17,31 @@ public class tabScore extends JPanel
 {
     Model model;
     AllianceScore blue, red;
+    JSpinner matchNumber;
 
 public tabScore(Model model) throws Exception
 {
-    super(new BorderLayout());
+    super();
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     this.model = model;
 
-    GridBagConstraints bag = new GridBagConstraints();
+    JPanel top = new JPanel();
+    top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
 
-    JPanel middle = new JPanel(new GridBagLayout());
+    top.add(new JLabel("Match "));
+
+    SpinnerModel smodel = new SpinnerNumberModel(1, 1, 200, 1);
+    matchNumber = new JSpinner(smodel);
+    matchNumber.setMaximumSize(new Dimension(60, 24));
+    top.add(matchNumber);
+    add(top);
+
     blue = new AllianceScore(model, true);
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.insets = new Insets(0, 0, 0, 0);
-    bag.gridx = 0;
-    bag.gridy = 0;
-    middle.add(blue, bag);
+    add(new JScrollPane(blue, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
     
     red = new AllianceScore(model, false);
-    bag.fill = GridBagConstraints.HORIZONTAL;
-    bag.insets = new Insets(0, 0, 0, 0);
-    bag.gridx = 0;
-    bag.gridy = 1;
-    middle.add(red, bag);
+    add(new JScrollPane(red, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
 
-    add(middle, BorderLayout.WEST);
     setVisible(true);
 }
 

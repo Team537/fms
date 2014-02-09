@@ -92,7 +92,7 @@ public void setState(int st)
         b.setSCCestop(    8 == (st & 0x8));
         b.setDSestop(     4 == (st & 0x4));
         b.setRobotLink(   2 == (st & 0x2));
-        b.setRobotEnabled(1 == (st & 0x1));
+        b.setRobotEnabled(1 == (st & 0x1), false);
 
         b.setRobotAuto( 128 == (st & 0x80));
         r.setPCstate(    64 == (st & 0x40));
@@ -101,7 +101,7 @@ public void setState(int st)
         r.setSCCestop(    8 == (st & 0x8));
         r.setDSestop(     4 == (st & 0x4));
         r.setRobotLink(   2 == (st & 0x2));
-        r.setRobotEnabled(1 == (st & 0x1));
+        r.setRobotEnabled(1 == (st & 0x1), false);
         st++;
     }
 }
