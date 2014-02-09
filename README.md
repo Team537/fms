@@ -17,15 +17,18 @@ Based on screen shots of the fms-lite program, found in `doc`.
 
 ## TODO
 
-- implement dq button
+- implement dq button -- disable robot
 - config tab ui impl
 - score tab ui impl
 - import match schedule  
 - export radio keys
 - implement test mode frame
 - what does DS send when estopped
-- set fms ip continuously and not at startup
-
+- set fms ip periodically and not only at startup
+- support for E-stop, does setting high bit in command state disable robot?
+- setting bypass does not stop updating robot
+- clearing bypass does not clear robot link
+- team management 
 
 ## Completed
 - raise fcui panel location from center to top
@@ -38,3 +41,4 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - A/T inside graphic robot enabled/disabled
 - Red 3 at top shows up as Red 1 at bottom of status page
 - compute and display ds avg rtt
+- implemented end of auto and start of tele-op cycle, untested

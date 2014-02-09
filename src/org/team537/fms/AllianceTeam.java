@@ -264,6 +264,21 @@ public class AllianceTeam {
         robot.setEnabled();
     }
 
+    public void setTeleop()
+    {
+        robot.setTeleop();
+    }
+
+    public boolean getRobotAckDisable()
+    {
+        return robot.getRobotAckDisable();
+    }
+
+    public boolean getRobotAckTele()
+    {
+        return robot.getRobotAckTele();
+    }
+
     public void setDisabled()
     {
         robot.setDisabled();
@@ -338,6 +353,7 @@ public class AllianceTeam {
         setRobotEnabled( iRobot.isEnabled(), iRobot.isAuto() );
         robot.setLastPacket( iRobot.getPacketNumber() );
         robot.setRoundTrip( iRobot.getTimeStamp() );
+        robot.setReturnState( iRobot.getState() );
         setDSRTT( robot.getDSRTT() );
     }
 };

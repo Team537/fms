@@ -18,6 +18,7 @@ public class Model extends Thread
     private TabPanel tPanel;
 
     boolean running = false;
+    int matchState = 0, counterTime;
 
     public Model() throws Exception 
     {
@@ -102,36 +103,70 @@ public class Model extends Thread
     // tele-op:     tele enabled
     // stopMatch:
 
+    private void runMatch()
+    {
+        switch (matchState) {
+        case 0:                 // Auto Enabled
+            if (0 == counterTime-- % 4) {
+                matchTime--;
+                mPanel.setTime(matchTime);
+                if (teleTime == matchTime) {
+                    stopMatch();
+                    matchState = 1;
+                }
+            }
+            break;
+        case 1:                 // Auto Complete
+            // wait for all robots to ack disable state
+            // and set teleop 
+            if (blue.readyForEndAuto() && red.readyForEndAuto()) {
+                blue.setTeleop();
+                red.setTeleop();
+                matchState = 2;
+            }
+            break;
+        case 2:                 // Tele Op Wait
+            // wait for all robots to ack teleop state
+            // and set enabled 
+            if (blue.readyForTeleop() && red.readyForTeleop()) {
+                blue.startMatch(false);
+                red.startMatch(false);
+                matchState = 3;
+            }
+            break;
+        case 3:                 // Tele Enabled
+            if (0 == counterTime-- % 4) {
+                matchTime--;
+                mPanel.setTime(matchTime);
+                if (0 == matchTime) {
+                    stopMatch();
+                    matchTimer.cancel();
+                    matchTimer = null;
+                }
+            }
+            break;
+        }
+    }
+
     public void startMatch()
     {
         blue.startMatch(true);
         red.startMatch(true);
         mPanel.setTime(matchTime);
         matchTimer = new Timer();
+        counterTime = 4 * matchTime;
+        matchState = 0;
         matchTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    matchTime--;
-                    mPanel.setTime(matchTime);
-                    if (0 == matchTime) {
-                        stopMatch();
-                        matchTimer.cancel();
-                        matchTimer = null;
-                    }
-                    if (teleTime == matchTime) {
-                        blue.startMatch(false);
-                        red.startMatch(false);
-                    }
-                }
-                }, 1000, 1000);
+            @Override
+            public void run() { runMatch(); } }, 250, 250);
     }
 
     public void stopMatch()
     {
+        matchTimer.cancel();
         blue.stopMatch();
         red.stopMatch();
         tPanel.stopMatch();
-        matchTimer.cancel();
     }
 
 }

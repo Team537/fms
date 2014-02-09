@@ -53,6 +53,31 @@ public class Alliance extends Thread {
         alliance_ready.setIcon( ready ? readyGreen : readyRed );
     }
 
+    public boolean readyForEndAuto()
+    {
+        boolean ready = true;
+        for (int i = 0; i < 3; i++) {
+            ready = ready & team[i].getRobotAckDisable();
+        }
+        return ready;
+    }
+
+    public boolean readyForTeleop()
+    {
+        boolean ready = true;
+        for (int i = 0; i < 3; i++) {
+            ready = ready & team[i].getRobotAckTele();
+        }
+        return ready;
+    }
+
+    public void setTeleop()
+    {
+        for (int i = 0; i < 3; i++) {
+            team[i].setTeleop();
+        }
+    }
+
     public void run()
     {
         while (true) {

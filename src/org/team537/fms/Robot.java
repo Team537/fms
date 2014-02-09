@@ -17,7 +17,7 @@ public class Robot
     CRC32 checksum = new CRC32();
     byte[] version;
     boolean enabled, valid;
-    byte state;
+    byte state, rstate;
     byte color;
     byte station;
     String teamAddr, dsmac;
@@ -129,6 +129,11 @@ public class Robot
     public void setState(boolean tele, boolean enable)
     {
         state = 'W';            // auto
+    }
+
+    public void setReturnState(byte st) 
+    {
+        rstate = st;
     }
 
     public void setAuto()
@@ -333,6 +338,21 @@ public class Robot
     public String getStatus() 
     {
         return String.format("0x%1$2x", 0x0ff & state);
+    }
+
+    public byte getState()
+    {
+        return state;
+    }
+
+    public boolean getRobotAckDisable()
+    {
+        return 0x20 != (0x20 & rstate);
+    }
+
+    public boolean getRobotAckTele()
+    {
+        return 0x20 != (0x20 & rstate);
     }
 
     private String toHex(byte val) {
