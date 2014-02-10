@@ -17,6 +17,7 @@ public class tabScore extends JPanel
 {
     Model model;
     AllianceScore blue, red;
+    JLabel  btotal, rtotal;
     JSpinner matchNumber;
 
 public tabScore(Model model) throws Exception
@@ -34,15 +35,31 @@ public tabScore(Model model) throws Exception
     matchNumber = new JSpinner(smodel);
     matchNumber.setMaximumSize(new Dimension(60, 24));
     top.add(matchNumber);
+
+    btotal = new JLabel(String.format("  Blue Total:  %1$4d  ", 0));
+    top.add(btotal);
+
+    rtotal = new JLabel(String.format("  Red Total:  %1$4d  ", 0));
+    top.add(rtotal);
+
     add(top);
 
-    blue = new AllianceScore(model, true);
-    add(new JScrollPane(blue, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-    
-    red = new AllianceScore(model, false);
-    add(new JScrollPane(red, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-
     setVisible(true);
+}
+
+public void finishConfig() throws Exception
+{
+    blue = new AllianceScore(model, btotal, true);
+    JScrollPane scroll = new JScrollPane(blue, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    blue.setScrollHandle(scroll);
+    add(scroll);
+    
+    red = new AllianceScore(model, rtotal, false);
+    scroll = new JScrollPane(red, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    red.setScrollHandle(scroll);
+    add(scroll);
+
+    revalidate();
 }
 
 public String getName()

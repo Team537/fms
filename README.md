@@ -30,6 +30,9 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - clearing bypass does not clear robot link
 - team management 
 
+## Issues
+- cannot create pane in tabbed panel larger than space available even with scroll bars (Score)
+
 ## Completed
 - raise fcui panel location from center to top
 - fetch and display fms ip-addr
