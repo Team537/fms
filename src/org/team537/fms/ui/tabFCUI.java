@@ -28,6 +28,7 @@ public class tabFCUI extends JPanel implements ActionListener, ChangeListener
     private JSpinner autoTime;
     private JSpinner teleTime;
     private JButton start, reset, restore;
+    private JButton prepare, commit;
 
     private Model model;
     private boolean isRunning = false;
@@ -91,11 +92,23 @@ public tabFCUI(Model model)
 
     model.setMatchTime(15, 120);
 
+    prepare = new JButton("prepare");
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 0;
+    bag.gridy = 2;
+    bag.gridwidth = 2;
+    bag.insets = new Insets(10, 0, 10, 0);
+    top.add(prepare, bag);
+    prepare.setActionCommand("prepare");
+    prepare.addActionListener(this);
+    prepare.setEnabled(true);
+
     start = new JButton("start");
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = 0;
     bag.gridy = 3;
     bag.gridwidth = 2;
+    bag.insets = new Insets(0, 0, 0, 0);
     top.add(start, bag);
     start.setActionCommand("start");
     start.addActionListener(this);
@@ -118,6 +131,17 @@ public tabFCUI(Model model)
     top.add(restore, bag);
     restore.setActionCommand("restore");
     restore.addActionListener(this);
+
+    commit = new JButton("commit");
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = 0;
+    bag.gridy = 5;
+    bag.gridwidth = 2;
+    bag.insets = new Insets(10, 0, 10, 0);
+    top.add(commit, bag);
+    commit.setActionCommand("commit");
+    commit.addActionListener(this);
+    commit.setEnabled(true);
 
     this.add(top, BorderLayout.NORTH);
 

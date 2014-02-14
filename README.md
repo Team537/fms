@@ -29,6 +29,8 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - setting bypass does not stop updating robot
 - clearing bypass does not clear robot link
 - team management 
+- log tab ui impl
+- fix team number input weirdness requiring leading zero
 
 ## Issues
 - cannot create pane in tabbed panel larger than space available even with scroll bars (Score)
