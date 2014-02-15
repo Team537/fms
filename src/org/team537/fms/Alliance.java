@@ -125,4 +125,11 @@ public class Alliance extends Thread {
         }
         // enabled update
     }
+
+    public void reset()
+    {
+        for (int i = 0; i < 3; i++) {
+            team[i].reset();
+        }
+    }
 }

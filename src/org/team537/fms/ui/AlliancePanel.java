@@ -76,7 +76,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.15;
     bag.insets = new Insets(0, 30, 0, 0);
-    bag.gridx = 4;
+    bag.gridx = 5;
     bag.gridy = 1;
     bag.gridwidth = 1;
     this.add(team_label, bag);
@@ -85,7 +85,7 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.weightx = 0.15;
     bag.insets = new Insets(0, 30, 0, 0);
-    bag.gridx = 6;
+    bag.gridx = 7;
     bag.gridy = 1;
     bag.gridwidth = 1;
     this.add(robot_label, bag);
@@ -130,31 +130,40 @@ public AlliancePanel(Model model, boolean isBlueAlliance) throws Exception
         team.dq.setContentAreaFilled(false);
         this.add(team.dq, bag);
         
+        // button estop
+        bag.weightx = 0.15;
+        bag.insets = new Insets(0, 0, 0, 10);
+        bag.gridx = 4;
+        bag.gridy = 2 + i;
+        bag.gridwidth = 1;
+        team.estop.setContentAreaFilled(false);
+        this.add(team.estop, bag);
+        
         // Team DS link status
         bag.weightx = 0.15;
         bag.insets = new Insets(0, 0, 0, 0);
-        bag.gridx = 4;
+        bag.gridx = 5;
         bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_dslink, bag);
 
         // Team E-stop
         bag.weightx = 0.15;
-        bag.gridx = 5;
+        bag.gridx = 6;
         bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_es, bag);
 
         // Robot Link
         bag.weightx = 0.15;
-        bag.gridx = 6;
+        bag.gridx = 7;
         bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_rlink, bag);
 
         // Robot Enabled
         bag.weightx = 0.15;
-        bag.gridx = 7;
+        bag.gridx = 8;
         bag.gridy = 2 + i;
         bag.gridwidth = 1;
         this.add(team.sum_renabled, bag);

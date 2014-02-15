@@ -164,6 +164,12 @@ public class Robot
         }
     }
 
+    public void setEStop()
+    {
+        setDisabled();
+        state = (byte) 0x81;
+    }
+
     public void setStation(boolean isBlue, int pos)
     {
         color = (byte) (isBlue ? 'B' : 'R');

@@ -178,6 +178,7 @@ public void actionPerformed(ActionEvent ev)
         model.stopMatch();
     } else if ("reset".equals(cmd)) {
         model.setMatchTime((Integer) autoTime.getValue(), (Integer) teleTime.getValue());
+        model.reset();
         expired = true;
     } else if ("restore".equals(cmd)) {
         autoTime.setValue(new Integer(15));

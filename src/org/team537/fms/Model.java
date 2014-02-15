@@ -177,4 +177,10 @@ public class Model extends Thread
         tPanel.stopMatch();
     }
 
+    public void reset()
+    {
+        blue.reset();
+        red.reset();
+    }
+
 }

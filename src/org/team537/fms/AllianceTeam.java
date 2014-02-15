@@ -14,6 +14,7 @@ public class AllianceTeam {
     public JFormattedTextField teamNum;
     public JCheckBox bypass;
     public JCheckBox dq;
+    public JCheckBox estop;
     // DS
     public JLabel sum_dslink;
     public JLabel sum_es;
@@ -89,6 +90,7 @@ public class AllianceTeam {
 
         bypass = new JCheckBox("Bypass");
         dq = new JCheckBox("DQ");
+        estop = new JCheckBox("EStop");
 
         sum_dslink = new JLabel(redIcon);
         sum_dslink.setToolTipText("DS Link");
@@ -331,6 +333,8 @@ public class AllianceTeam {
             setRobotEnabled( false, true );
             setDSRTT( 0.0 );
         }
+        if (estop.isSelected())
+            robot.setEStop();
         robot.setStation(isBlue, i);
         robot.update();
     }
@@ -355,6 +359,15 @@ public class AllianceTeam {
         robot.setRoundTrip( iRobot.getTimeStamp() );
         robot.setReturnState( iRobot.getState() );
         setDSRTT( robot.getDSRTT() );
+    }
+
+    public void reset()
+    {
+        teamNum.setText("0000");
+        bypass.setSelected(false);
+        dq.setSelected(false);
+        estop.setSelected(false);
+        robot.reset();
     }
 };
 
