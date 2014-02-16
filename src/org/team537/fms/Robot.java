@@ -331,6 +331,11 @@ public class Robot
         return 0x10 == (0x10 & state);
     }
 
+    public boolean isEStop()
+    {
+        return 0x80 == (0xe0 & state);
+    }
+
     public long getTimeStamp()
     {
         return tstamp;

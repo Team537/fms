@@ -17,18 +17,18 @@ Based on screen shots of the fms-lite program, found in `doc`.
 
 ## TODO
 
+- audience display proxy config 
+- audience display send info
+- export radio keys
+- import match schedule  
+- team management 
+
 - implement dq button -- disable robot
 - config tab ui impl
-- score tab ui impl
-- import match schedule  
-- export radio keys
 - implement test mode frame
-- what does DS send when estopped
 - set fms ip periodically and not only at startup
-- support for E-stop, does setting high bit in command state disable robot?
 - setting bypass does not stop updating robot
 - clearing bypass does not clear robot link
-- team management 
 - log tab ui impl
 - fix team number input weirdness requiring leading zero
 
@@ -47,3 +47,6 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - Red 3 at top shows up as Red 1 at bottom of status page
 - compute and display ds avg rtt
 - implemented end of auto and start of tele-op cycle, untested
+- what does DS send when estopped
+- support for E-stop, does setting high bit in command state disable robot?
+- score tab ui impl

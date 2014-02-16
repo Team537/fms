@@ -34,4 +34,9 @@ public String getName()
     return "Log";
 }
 
+public void Log(String msg)
+{
+    data.addElement(msg);
+}
+
 }

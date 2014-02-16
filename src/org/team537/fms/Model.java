@@ -16,6 +16,7 @@ public class Model extends Thread
     private int matchTime, teleTime;
     private MatchPanel mPanel;
     private TabPanel tPanel;
+    private Audience aud;
 
     boolean running = false;
     int matchState = 0, counterTime;
@@ -25,6 +26,7 @@ public class Model extends Thread
         blue = new Alliance(true);
         red = new Alliance(false);
         matchTimer = null;
+        aud = new Audience(this);
         start();
     }
 
@@ -67,9 +69,9 @@ public class Model extends Thread
                 // System.out.println(robot);
                 pkt.setLength(data.length);
                 if (robot.isBlue())
-                    blue.update(robot);
+                    blue.update(robot, aud);
                 else
-                    red.update(robot);
+                    red.update(robot, aud);
             }
         }
     }
@@ -89,11 +91,13 @@ public class Model extends Thread
         matchTime = aTime + tTime;
         teleTime = tTime;
         mPanel.setTime(matchTime);
+        aud.setTime(matchTime);
     }
 
     public void setMatchNumber(Integer mNum)
     {
         mPanel.setMatch(mNum);
+        aud.setMatchNumber(mNum);
     }
 
     // start:       auto disabled
@@ -116,6 +120,7 @@ public class Model extends Thread
                 if (teleTime == matchTime) {
                     blue.stopMatch();
                     red.stopMatch();
+                    aud.stopMatch(true);
                     matchState = 1;
                 }
             }
@@ -135,6 +140,7 @@ public class Model extends Thread
             if (blue.readyForTeleop() && red.readyForTeleop()) {
                 blue.startMatch(false);
                 red.startMatch(false);
+                aud.startMatch(false);
                 matchState = 3;
             }
             break;
@@ -144,8 +150,10 @@ public class Model extends Thread
                 mPanel.setTime(matchTime);
                 if (0 == matchTime) {
                     stopMatch();
+                    aud.stopMatch(false);
                     matchTimer.cancel();
                     matchTimer = null;
+                    matchState = 0;
                 }
             }
             break;
@@ -160,10 +168,10 @@ public class Model extends Thread
     {
         blue.startMatch(true);
         red.startMatch(true);
+        aud.startMatch(true);
         mPanel.setTime(matchTime);
         matchTimer = new Timer();
         counterTime = 4 * matchTime;
-        matchState = 0;
         matchTimer.schedule(new TimerTask() {
             @Override
             public void run() { runMatch(); } }, 250, 250);
@@ -179,8 +187,19 @@ public class Model extends Thread
 
     public void reset()
     {
+        matchTimer.cancel();
+        matchState = 0;
         blue.reset();
         red.reset();
     }
 
+    public void Log(String message)
+    {
+        tPanel.Log(message);
+    }
+
+    public Audience getAudience()
+    {
+        return aud;
+    }
 }

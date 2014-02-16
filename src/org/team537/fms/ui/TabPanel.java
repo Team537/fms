@@ -53,4 +53,9 @@ public void stopMatch()
     ((tabFCUI) tabs[0]).stopMatch();
 }
 
+public void Log(String msg)
+{
+    ((tabLog) tabs[5]).Log(msg);
+}
+
 }

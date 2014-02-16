@@ -333,8 +333,9 @@ public class AllianceTeam {
             setRobotEnabled( false, true );
             setDSRTT( 0.0 );
         }
-        if (estop.isSelected())
+        if (estop.isSelected()) {
             robot.setEStop();
+        }
         robot.setStation(isBlue, i);
         robot.update();
     }
@@ -355,6 +356,7 @@ public class AllianceTeam {
         setPCstate( iRobot.doesDSseeRadio() );
         setRobotAuto( iRobot.isAuto() );
         setRobotEnabled( iRobot.isEnabled(), iRobot.isAuto() );
+        setSCCestop( iRobot.isEStop() );
         robot.setLastPacket( iRobot.getPacketNumber() );
         robot.setRoundTrip( iRobot.getTimeStamp() );
         robot.setReturnState( iRobot.getState() );

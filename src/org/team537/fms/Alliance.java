@@ -12,6 +12,7 @@ public class Alliance extends Thread {
     public JLabel alliance_ready;
     private ImageIcon readyRed, readyGreen;
 
+    boolean isBlue;
 
     public Alliance(boolean isBlue) throws Exception
     {
@@ -36,6 +37,7 @@ public class Alliance extends Thread {
         for (int i = 0; i < 3; i++) {
             team[i] = new AllianceTeam(isBlue);
         }
+        this.isBlue = isBlue;
         start();
     }
 
@@ -97,11 +99,12 @@ public class Alliance extends Thread {
         }
     }
 
-    public void update(Robot robot)
+    public void update(Robot robot, Audience aud)
     {
         for (int i = 0; i < 3; i++) {
             if (robot.getTeam() == team[i].getTeam()) {
                 team[i].update(robot);
+                aud.setTeam(isBlue, i, robot.getTeam());
                 break;
             }
         }
