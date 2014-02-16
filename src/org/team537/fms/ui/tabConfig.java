@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.team537.fms.Model;
@@ -22,6 +23,9 @@ public class tabConfig extends JPanel implements ItemListener, ActionListener
 
     private JCheckBox eCisco;
     private JTextField ciscoIPaddr;
+    private JTextField ciscoUser;
+    private JPasswordField ciscoPass;
+    private JPasswordField ciscoRoot;
 
     private JCheckBox eTeamMgmt;
     private JTextField TeamMgmtURL;
@@ -35,7 +39,7 @@ public tabConfig(Model model)
     super(new GridBagLayout());
     this.model = model;
     GridBagConstraints bag = new GridBagConstraints();
-    int gridx = 0;
+    int gridx = 0, gridy = 0;
 
     // configure access-point connectivity
     eCisco = new JCheckBox("Enable Cisco");
@@ -43,23 +47,69 @@ public tabConfig(Model model)
     eCisco.addItemListener(this);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 0;
+    bag.gridy = gridy;
     add(eCisco, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 0;
+    bag.gridy = gridy;
     add(new JLabel("Cisco ip-addr:"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 0;
+    bag.gridy = gridy;
     ciscoIPaddr = new JTextField("10.0.0.1");
     ciscoIPaddr.setEditable(false);
     ciscoIPaddr.addActionListener(this);
     add(ciscoIPaddr, bag);
 
+    gridx = 1;
+    gridy++;
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    add(new JLabel("User:"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    ciscoUser = new JTextField("Cisco");
+    ciscoUser.setEditable(false);
+    ciscoUser.addActionListener(this);
+    add(ciscoUser, bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    add(new JLabel("password:"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    ciscoPass = new JPasswordField("********", 15);
+    ciscoPass.setEditable(false);
+    ciscoPass.addActionListener(this);
+    add(ciscoPass, bag);
+
+    gridx = 3;
+    gridy++;
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    add(new JLabel("Enable password:"), bag);
+
+    bag.fill = GridBagConstraints.HORIZONTAL;
+    bag.gridx = gridx++;
+    bag.gridy = gridy;
+    ciscoRoot = new JPasswordField("********", 15);
+    ciscoRoot.setEditable(false);
+    ciscoRoot.addActionListener(this);
+    add(ciscoRoot, bag);
+
     gridx = 0;
+    gridy++;
 
     // configure team management url
     eTeamMgmt = new JCheckBox("Enable Team Management");
@@ -67,54 +117,57 @@ public tabConfig(Model model)
     eTeamMgmt.addItemListener(this);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 1;
+    bag.gridy = gridy;
     add(eTeamMgmt, bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.insets = new Insets(0, 10, 0, 10);
     bag.gridx = gridx++;
-    bag.gridy = 1;
+    bag.gridy = gridy;
     add(new JLabel("URL:"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.insets = new Insets(0, 0, 0, 0);
     bag.gridx = gridx++;
-    bag.gridy = 1;
+    bag.gridy = gridy;
+    bag.gridwidth = 3;
     TeamMgmtURL = new JTextField(40);
     TeamMgmtURL.setEditable(false);
     TeamMgmtURL.addActionListener(this);
     add(TeamMgmtURL, bag);
 
     gridx = 0;
+    gridy++;
     // Audience Proxy 
     eAudProxy = new JCheckBox("Enable Audience Proxy");
     eAudProxy.setContentAreaFilled(false);
     eAudProxy.addItemListener(this);
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 2;
+    bag.gridy = gridy;
+    bag.gridwidth = 1;
     add(eAudProxy, bag);
 
     bag.gridx = gridx++;
-    bag.gridy = 2;
+    bag.gridy = gridy;
     add(new JLabel("Aud ip-addr:"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 2;
+    bag.gridy = gridy;
     AudProxyIPaddr = new JTextField("10.0.0.10");
     AudProxyIPaddr.setEditable(false);
     AudProxyIPaddr.addActionListener(this);
     add(AudProxyIPaddr, bag);
 
     bag.gridx = gridx++;
-    bag.gridy = 2;
+    bag.gridy = gridy;
     bag.insets = new Insets(0, 10, 0, 10);
     add(new JLabel("Port:"), bag);
 
     bag.fill = GridBagConstraints.HORIZONTAL;
     bag.gridx = gridx++;
-    bag.gridy = 2;
+    bag.gridy = gridy;
     bag.insets = new Insets(0, 0, 0, 0);
     AudProxyPort = new JTextField("8005");
     AudProxyPort.setEditable(false);
@@ -136,10 +189,17 @@ public void itemStateChanged(ItemEvent ev)
     Object source = ev.getItemSelectable();
     try {
     if (source == eCisco) {
-        if (eCisco.isSelected())
+        if (eCisco.isSelected()) {
             ciscoIPaddr.setEditable(true);
-        else
+            ciscoUser.setEditable(true);
+            ciscoPass.setEditable(true);
+            ciscoRoot.setEditable(true);
+        } else {
             ciscoIPaddr.setEditable(false);
+            ciscoUser.setEditable(false);
+            ciscoPass.setEditable(false);
+            ciscoRoot.setEditable(false);
+        }
     } else if (source == eTeamMgmt) {
         if (eTeamMgmt.isSelected())
             TeamMgmtURL.setEditable(true);

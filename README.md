@@ -30,6 +30,9 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - log tab ui impl
 - fix team number input weirdness requiring leading zero
 
+## Issues
+- Score panel grows beyond allocated space and the scroll bar doesn't work 
+
 ## Completed
 - raise fcui panel location from center to top
 - fetch and display fms ip-addr
@@ -47,4 +50,3 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - score tab ui impl
 - audience display proxy config 
 - audience display send info
-- (fixed) cannot create pane in tabbed panel larger than space available even with scroll bars (Score) 

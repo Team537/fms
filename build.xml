@@ -8,6 +8,13 @@
   <property name = "class-dir" value = "${build-dir}/classes" />
   <property name = "build.compiler" value = "modern" />
 
+  <property name = "commons.net.dir" value = "${basedir}/3p/commons-net-3.3" />
+  <property name = "net.jar" value = "${lib-dir}/commons-net-3.3.jar" />
+
+  <path id="deps.classpath">
+    <pathelement location="${net.jar}" />
+  </path>
+
   <target name = "init">
     <mkdir dir = "${build-dir}" />
     <mkdir dir = "${lib-dir}" />
@@ -16,8 +23,12 @@
     <tstamp/>
   </target>
 
-  <target name = "compile" depends = "init">
-    <javac destdir = "${class-dir}" debug="on" includeAntRuntime="false">
+  <target name = "depend">
+    <copy file="${commons.net.dir}/commons-net-3.3.jar" todir="${lib-dir}" />
+  </target>
+
+  <target name = "compile" depends = "init, depend">
+    <javac destdir = "${class-dir}" classpathref="deps.classpath" debug="on" includeAntRuntime="false">
       <src path="${src-dir}"/>
       <include name="*/**"/>
     </javac>
