@@ -44,22 +44,17 @@ public tabScore(Model model) throws Exception
 
     add(top);
 
-    setVisible(true);
-}
-
-public void finishConfig() throws Exception
-{
     blue = new AllianceScore(model, btotal, true);
-    JScrollPane scroll = new JScrollPane(blue, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    blue.setScrollHandle(scroll);
-    add(scroll);
-    
-    red = new AllianceScore(model, rtotal, false);
-    scroll = new JScrollPane(red, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    red.setScrollHandle(scroll);
-    add(scroll);
+    JScrollPane bs = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    bs.setViewportView(blue);
+    add(bs);
 
-    revalidate();
+    red = new AllianceScore(model, rtotal, false);
+    JScrollPane rs = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    rs.setViewportView(red);
+    add(rs);
+
+    setVisible(true);
 }
 
 public String getName()

@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -59,7 +58,6 @@ public class AllianceScore extends JPanel implements ActionListener, ItemListene
     JLabel allTotal;
     int cycleCount = 0;
     int cycleGridy;
-    JScrollPane scrollBar;
 
     BufferedImage background;
     ImageIcon plus;
@@ -396,21 +394,19 @@ public void actionPerformed(ActionEvent ev)
     String cmd = ev.getActionCommand();
     if ("plus".equals(cmd)) {
         addCycle();
+        // ScrollUtil.scroll(this, ScrollUtil.NONE, ScrollUtil.BOTTOM);
         revalidate();
-        ScrollUtil.scroll(scrollBar, ScrollUtil.NONE, ScrollUtil.BOTTOM);
     }
 }
 
 public void itemStateChanged(ItemEvent ev)
 {
     sumAll();
-    revalidate();
 }
 
 public void stateChanged(ChangeEvent ev) 
 {
     sumAll();
-    revalidate();
 }
 
 private void sumAll()
@@ -441,11 +437,6 @@ private void sumAll()
     foulTotal.setText(String.format("%1$4d", tot));
     sum += tot;
     allTotal.setText(String.format("  %1$s Total:  %2$4d  ", isBlue ? "Blue" : "Red ", sum));
-}
-
-public void setScrollHandle(JScrollPane handle)
-{
-    scrollBar = handle;
 }
 
 @Override
