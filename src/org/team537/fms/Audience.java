@@ -18,7 +18,6 @@ public class Audience extends Thread
     InetAddress addr;
     int port;
     boolean isAuto = false;;
-    Socket sock;
     Model model;
 
     int matchTime, matchNumber;
@@ -52,26 +51,10 @@ public class Audience extends Thread
         this.port = Integer.valueOf(port);
     }
 
-    private void getSocket() throws Exception
-    {
-        sock = new Socket(addr, port);
-    }
-
     public void setEnabled(boolean en)
     {
         enabled = en;
-        if (en) {
-            try {
-                getSocket();
-                enabled = true;
-                enq(ENABLED);
-            } catch (Exception ex) {
-                model.Log("Audience: cannot connect socket to " + addr + " " + ex);
-            }
-        } else {
-            enabled = false;
-            enq(DISABLED);
-        }
+        enq(en ? ENABLED : DISABLED);
     }
 
     public void setTime(int mTime)
@@ -114,7 +97,7 @@ public class Audience extends Thread
 
     private synchronized void enq(int req)
     {
-        queue.addElement(req);
+        queue.addElement(new Integer(req));
     }
 
     private synchronized int deq()
@@ -125,6 +108,7 @@ public class Audience extends Thread
     public void run()
     {
         boolean once = false;
+        Socket sock = null;
         while (true) {
             if (0 == queue.getSize()) {
                 try {
@@ -133,18 +117,18 @@ public class Audience extends Thread
                     // don't care
                 }
             }
-            if (null == sock) { 
-                try { 
-                    getSocket();
-                    once = false;
-                } catch (Exception ex) {
-                    if (!once) 
-                        model.Log("Audience: cannot re-connect to socket" + ex);
-                    once = true;
-                }
-            }
             int msg = deq();
             if (enabled) {
+                if (null == sock) { 
+                    try { 
+                        sock = new Socket(addr, port);
+                        once = false;
+                    } catch (Exception ex) {
+                        if (!once) 
+                            model.Log("Audience: cannot re-connect to socket" + ex);
+                        once = true;
+                    }
+                }
                 String amsg = null;
                 switch (msg) {
                 case ENABLED: break;

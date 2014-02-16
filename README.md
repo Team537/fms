@@ -17,8 +17,6 @@ Based on screen shots of the fms-lite program, found in `doc`.
 
 ## TODO
 
-- audience display proxy config 
-- audience display send info
 - export radio keys
 - import match schedule  
 - team management 
@@ -50,3 +48,5 @@ Based on screen shots of the fms-lite program, found in `doc`.
 - what does DS send when estopped
 - support for E-stop, does setting high bit in command state disable robot?
 - score tab ui impl
+- audience display proxy config 
+- audience display send info
